@@ -146,6 +146,6 @@ object AirTest extends App{
     val yan = new AirYan(r)
     yan.lud_npp_new(r)
     //yan.lud_ip()
-    val v = new VectorD(1,4,6)
-    yan.solveM(yan.lud_npp_new(r),v)
+    //val v = new VectorD(1,4,6)
+    //yan.solveM(yan.lud_npp_new(r),v)
 }
