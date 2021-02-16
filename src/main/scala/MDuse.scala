@@ -6,6 +6,7 @@ import scalation.linalgebra._
 import scalation.linalgebra.Fac_LU
 import scala.util.Random
 import scala.math._
+import scalation.plot.Plot
 import scala.io.Source.fromFile
 
 
@@ -83,24 +84,24 @@ class MDuse(a: MatrixD){
   //r_lambda: regularization lambda
   //xTy: predict matrix
   //Total_loss = (confidence_level * predict loss) + regularization loss
-  def Lossf(c: MatrixD, p: MatrixD, xTy: MatrixD, X: MatrixD, Y: MatrixD, r_lambda: Int): (Double, Double, Double, Double, Double, Double, Double, Double) = {
+  def Lossf(c: MatrixD, p: MatrixD, xTy: MatrixD, X: MatrixD, Y: MatrixD, r_lambda: Int): (Double, Double, Double, Double, Double, Double) = {
     val predict_error = square(p - xTy)
-    val predict_error_round = square(xTy - round(p))
+    //val predict_error_round = square(xTy - round(p))
     //println("1:"+predict_error)
     val confidence_error = (c**predict_error).sum
-    val confidence_error_round = (c**predict_error_round).sum
+    //val confidence_error_round = (c**predict_error_round).sum
     //println("2:"+confidence_error)
     val mae = confidence_error / (c.dim1*c.dim2)
-    val mae_round = confidence_error_round / (c.dim1*c.dim2)
+    //val mae_round = confidence_error_round / (c.dim1*c.dim2)
     val rmse = sqrt(confidence_error / (c.dim1*c.dim2))
-    val rmse_round = sqrt(confidence_error_round / (c.dim1*c.dim2))
+    //val rmse_round = sqrt(confidence_error_round / (c.dim1*c.dim2))
     //println("2.5:"+rmse)
     val regularization =  r_lambda * (square(X).sum + square(Y).sum)
     //println("3:"+regularization)
     val total_loss = confidence_error + regularization
     //println("4:"+total_loss)
     
-    (predict_error.sum, confidence_error, mae, mae_round, rmse, rmse_round, regularization, total_loss)
+    (predict_error.sum, confidence_error, mae, rmse, regularization , total_loss)
   }
 
   //construct diagonal matrix with row
@@ -135,6 +136,15 @@ class MDuse(a: MatrixD){
     mat
   }
 
+  //set column to the matrix row
+  def setCol(mat : MatrixD, tarCol: VectoD, index: Int) : MatrixD = {
+    
+    for(j <- 0 to mat.dim2 -1){
+        mat(j,index) = tarCol(j)
+    }
+    mat
+  }
+
   //convert vector to matrix
   def makeVec(mat : MatrixD) : VectoD = {
     val vec = new VectorD(mat.dim1)
@@ -154,27 +164,34 @@ class MDuse(a: MatrixD){
     val yT = Y.t
     
     for (i <- 0 to nu-1 ) {
+      print(s"\r user: ${i+1} / "+nu)
       val Cu = diagMR(C, i)
       
       val yT_Cu_y = yT * Cu * Y
       val lI = eye(nf) * r_lambda
-      val yT_Cu_pu = makeVec((yT * Cu) * ((P.selectRows(Array(i))).t))
-      println(i)
+      // val yT_Cu_pu = makeVec((yT * Cu) * ((P.selectRows(Array(i))).t))
+      val yT_Cu_pu = ((yT * Cu) * ((P.selectRows(Array(i))).t)).col(0)
+      
       setRow(X, solveM(yT_Cu_y + lI, yT_Cu_pu), i)
     }
+    println()
   }
 
-  def optimize_item(X: MatrixD, Y: MatrixD, C: MatrixD, P: MatrixD, nu:Int, nf:Int, r_lambda:Int) = {
+  def optimize_item(X: MatrixD, Y: MatrixD, C: MatrixD, P: MatrixD, ni:Int, nf:Int, r_lambda:Int) = {
     val xT = X.t
 
     for (i <- 0 to ni-1 ) {
+      print(s"\r item: ${i+1} / "+(ni))
       val Ci = diagMC(C, i)
       val xT_Ci_x = xT * Ci * X
       val lI = eye(nf) * r_lambda
-      val xT_Ci_pi = makeVec((xT * Ci) * (P.selectCols(Array(i))))
-      Y.setCol(i, solveM(xT_Ci_x + lI, xT_Ci_pi))
+      //val xT_Ci_pi = makeVec((xT * Ci) * (P.selectCols(Array(i))))
+      val xT_Ci_pi = ((xT * Ci) * (P.selectCols(Array(i)))).col(0)
+      //var aaa = xT_Ci_x + lI
+      setRow(Y, solveM(xT_Ci_x + lI, xT_Ci_pi), i)
+      //Y.setCol(i, solveM(xT_Ci_x + lI, xT_Ci_pi))
     }
-    
+    println()
   }
   
   //solve lu decomposition problem
@@ -212,16 +229,16 @@ class MDuse(a: MatrixD){
 
 
 object MDTest extends App{
-  // val r = new MatrixD ((10, 11), 1, 0, 2, 4, 4, 0, 0, 1, 0, 1, 0,
-  //                                0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1, 
-  //                                0, 0, 6, 0, 0, 0, 0, 1, 0, 4, 0,
-  //                                0, 3, 4, 7, 3, 0, 0, 2, 2, 0, 0,
-  //                                0, 5, 5, 0, 3, 0, 0, 0, 0, 0, 0,
-  //                                0, 0, 0, 0, 0, 1, 5, 0, 0, 5, 0,
-  //                                0, 0, 4, 0, 0, 0, 3, 0, 0, 0, 5,
-  //                                0, 0, 0, 3, 0, 4, 0, 3, 0, 0, 4,
-  //                                0, 3, 0, 0, 0, 0, 5, 0, 5, 5, 0,
-  //                                0, 0, 0, 3, 0, 0, 2, 3, 4, 5, 7
+  //  val r = new MatrixD ((10, 11), 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0,
+  //                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+  //                                0, 0, 0, 0, 0, 0, 0, 1, 0, 4, 0,
+  //                                0, 3, 4, 0, 3, 0, 0, 2, 2, 0, 0,
+  //                                0, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0,
+  //                                0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0,
+  //                                0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 5,
+  //                                0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 4,
+  //                                0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0,
+  //                                0, 0, 0, 3, 0, 0, 0, 0, 4, 5, 0
   //                                )
   def read(fileName: String): MatrixD = {
     var lines = fromFile(fileName).getLines.toArray        // get the lines from file
@@ -235,23 +252,11 @@ object MDTest extends App{
   
   val start = System.nanoTime
   val BASE_DIR = System.getProperty("user.dir")
-  val data_file =  BASE_DIR + "/src/main/scala/sorted_data.txt"
+  val data_file =  BASE_DIR + "/src/main/scala/new_Sorted_500.txt"
   //val x = new MDuse()
   var r = read(data_file)
-  r.setCol(0, (r.col(0)-1))
-  r.setCol(1, (r.col(1)-1))
-
-  // val r = new MatrixD ((10, 11), 0.04439 ,0.11243 ,0.32589 ,0.11185 ,0.79558 ,0.75959 ,0.00787 ,0.16976 ,0.54673 ,0.25931 ,0.02342,
-  //                                 0.20026 ,0.32852 ,0.24149 ,0.22539 ,0.48794 ,0.55377 ,0.46294 ,0.20690 ,0.42723 ,0.71626 ,0.60039,
-  //                                 0.71333 ,0.99650 ,0.07591 ,0.66492 ,0.89667 ,0.32104 ,0.22329 ,0.19059 ,0.47382 ,0.54422 ,0.27665,
-  //                                 0.63328 ,0.56291 ,0.94590 ,0.03897 ,0.20077 ,0.85902 ,0.12808 ,0.77927 ,0.88222 ,0.31842 ,0.72347,
-  //                                 0.26145 ,0.50145 ,0.96402 ,0.05449 ,0.44643 ,0.63529 ,0.53321 ,0.33456 ,0.25599 ,0.10948 ,0.87151,
-  //                                 0.36336 ,0.33673 ,0.34861 ,0.07749 ,0.78818 ,0.05115 ,0.59116 ,0.69323 ,0.28308 ,0.65348 ,0.41492,
-  //                                 0.50497 ,0.61136 ,0.08530 ,0.77194 ,0.63160 ,0.05148 ,0.87774 ,0.82421 ,0.17487 ,0.62268 ,0.93922,
-  //                                 0.13246 ,0.19710 ,0.95537 ,0.32183 ,0.43840 ,0.36500 ,0.66287 ,0.37480 ,0.33942 ,0.86174 ,0.33161,
-  //                                 0.16029 ,0.70832 ,0.84868 ,0.19253 ,0.65447 ,0.81623 ,0.39414 ,0.23403 ,0.60881 ,0.43170 ,0.48917,
-  //                                 0.46623 ,0.20176 ,0.72557 ,0.94117 ,0.20763 ,0.39266 ,0.98280 ,0.87373 ,0.97390 ,0.43321 ,0.74951
-  //                                )
+  // r.setCol(0, (r.col(0)-1))
+  // r.setCol(1, (r.col(1)-1))
   val target = new MDuse(r)
   
   var X = target.createRM(target.nu, target.nf)
@@ -260,16 +265,22 @@ object MDTest extends App{
 
   val p = target.ConP(target.nu,target.ni)
   val c = target.ConfC(r)
+  
 
-  var predict_errors = ""
-  var confidence_errors = ""
-  var regularization_list = ""
-  var total_losses = ""
+  var interval = 15
+
+
+  var predict_errors = new VectorD(interval)
+  var confidence_errors = new VectorD(interval)
+  var regularization_list = new VectorD(interval)
+  var total_losses = new VectorD(interval)
+  var maes = new VectorD(interval)
+  var rmses = new VectorD(interval)
   var total_time_loss = 0.0
   var start_Optimize = 0.0
   var opt_Duration = 0.0
 
-  for (i <- 0 to 15) {
+  for (i <- 0 until interval) {
     println("----------------step "+i+"----------------")
     if (i != 0){
         val start_Optimize = System.nanoTime
@@ -282,22 +293,24 @@ object MDTest extends App{
     val predict = X * (Y.t)
 
     var start_Loss = System.nanoTime
-    val (predict_error, confidence_error, mae, mae_round, rmse, rmse_round, regularization, total_loss) = target.Lossf(c, p, predict, X, Y, target.r_lambda)
+    val (predict_error, confidence_error, mae, rmse, regularization, total_loss) = target.Lossf(c, p, predict, X, Y, target.r_lambda)
     val loss_Duration = (System.nanoTime - start_Loss) / 1e9d
 
-    predict_errors += predict_error
-    confidence_errors += confidence_error
-    regularization_list += regularization
-    total_losses += total_loss
+    predict_errors = predict_errors + (i,predict_error)
+    confidence_errors = confidence_errors + (i,confidence_error)
+    regularization_list = regularization_list + (i, regularization)
+    total_losses = total_losses + (i,total_loss)
+    maes = maes + (i,mae)
+    rmses = rmses + (i,rmse)
     total_time_loss += loss_Duration
 
     //println("----------------step "+i+"----------------")
     println("predict error: " + predict_error)
     println("confidence error: " + confidence_error)
     println("mae: " + mae)
-    println("mae_round: " + mae_round)
+    //println("mae_round: " + mae_round)
     println("rmse: " + rmse)
-    println("rmse round: " + rmse_round)
+    //println("rmse round: " + rmse_round)
     println("regularization: " + regularization)
     println("total loss: " + total_loss)
     println{"loss function running time: "+loss_Duration*1000+" ms"}
@@ -306,7 +319,7 @@ object MDTest extends App{
   var predict = X * (Y.t)
   println("----------------final predict----------------")
   
-  println(predict)
+  //println(predict)
 
   val program_run = (System.nanoTime - start) / 1e9d
   println{"Total loss function running time: "+total_time_loss*1000+" ms"}
@@ -316,10 +329,16 @@ object MDTest extends App{
   //   println(line)
   //   println(line.split("\t").length)
   // }
-    
-  
+
+  val t_idx = VectorD.range(0, interval)
+  new Plot (t_idx, predict_errors, null, "P_ERROR", true)
+  new Plot (t_idx, confidence_errors, null, "C_ERROR", true)
+  new Plot (t_idx, maes, null, "MAE", true)
+  new Plot (t_idx, rmses, null, "RMSE", true)
+  new Plot (t_idx, regularization_list, null, "R_LIST", true)
+  new Plot (t_idx, total_losses, null, "TOTAL_LOSS", true)
   //println(fromFile(data_file).getLines.split(" "))
-  println{r}
+  //println{r}
 }
 
 
