@@ -252,7 +252,7 @@ object MDTest extends App{
   
   val start = System.nanoTime
   val BASE_DIR = System.getProperty("user.dir")
-  val data_file =  BASE_DIR + "/src/main/scala/new_Sorted_500.txt"
+  val data_file =  BASE_DIR + "/src/main/scala/new_SortedM.txt"
   //val x = new MDuse()
   var r = read(data_file)
   // r.setCol(0, (r.col(0)-1))
