@@ -25,7 +25,7 @@ class MDuse(a: MatrixD){
   def createRM(row_number : Int, column_number : Int) : MatrixD = {
  	  var matrixA = new MatrixD (row_number, column_number)
     var i = 0
-    var j = 0
+    var j = 0//(range?)
 		for (i <- 0 to row_number-1 ) {
 			for (j <- 0 to column_number-1 ) {
 				matrixA(i,j) = Random.nextInt(10000) * 0.000001
@@ -35,7 +35,7 @@ class MDuse(a: MatrixD){
 	  matrixA
 	} // create a random matrix 
 
-  //Replace all elements in the matrix with squared value
+  //Replace all elements in the matrix with squared value(???)
   def square(a:MatrixD): (MatrixD) = {
     val S = a.copy()
     for (i <- 0 to a.dim1-1 ) {
@@ -71,10 +71,7 @@ class MDuse(a: MatrixD){
   }
 
   // Initialize Confidence Matrix C
-  def ConfC(a: MatrixD) : MatrixD = {
-    val C = a * alpha + 1
-    C
-  }
+  def ConfC(a: MatrixD) : MatrixD = a * alpha + 1
 
   //Set up loss function
   //C: confidence matrix

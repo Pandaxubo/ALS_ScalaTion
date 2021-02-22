@@ -1,0 +1,8 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(compole, Some(5c0ab17b-dee8-49c7-aa1e-5e391b049b07), Some(CommandSource(console0)))[0m
+[0m[[0m[31merror[0m] [0m[0mNot a valid command: compole (similar: completions)[0m
+[0m[[0m[31merror[0m] [0m[0mNot a valid project ID: compole[0m
+[0m[[0m[31merror[0m] [0m[0mExpected ':'[0m
+[0m[[0m[31merror[0m] [0m[0mNot a valid key: compole (similar: compile, compilers, console)[0m
+[0m[[0m[31merror[0m] [0m[0mcompole[0m
+[0m[[0m[31merror[0m] [0m[0m       ^[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m

@@ -1,5 +1,6 @@
 
-
+import scalation.random.RandomMatD
+import scalation.random.VariateMat
 import scalation.linalgebra.MatrixD
 import scalation.linalgebra.Eigenvalue
 import scalation.linalgebra.Eigenvector
@@ -86,7 +87,15 @@ class AirYan(a: MatrixD){
     }
 
 
-
+    def square(a:MatrixD): (MatrixD) = {
+        val S = a.copy()
+        for (i <- 0 to a.dim1-1 ) {
+                for (j <- 0 to a.dim2-1 ) { 
+              S(i,j) = a(i,j) * a(i,j)
+                }
+            }
+        S
+      }
 
 //     def lud_n(mat: MatrixD, n: Int) : (MatrixD, MatrixD) = {
 //       var lower = new MatrixD (n )          // lower triangular matrix
@@ -133,19 +142,43 @@ class AirYan(a: MatrixD){
 }
 
 object AirTest extends App{
-  // val r = new MatrixD((4,4), 2, 4, 1, -3,
-  //                           -1, -2, 2, 4,
-  //                            4, 2, -3, 5, 
-  //                            5, -4, -3, 1
-  //  )
-  val r = new MatrixD((3,3), 1, 1, 1,
-                             4, 3, -1,
-                             3, 5, 3
-   )
-    //val yan = new MatrixD(r)
-    val yan = new AirYan(r)
-    yan.lud_npp_new(r)
-    //yan.lud_ip()
-    //val v = new VectorD(1,4,6)
-    //yan.solveM(yan.lud_npp_new(r),v)
+//   // val r = new MatrixD((4,4), 2, 4, 1, -3,
+//   //                           -1, -2, 2, 4,
+//   //                            4, 2, -3, 5, 
+//   //                            5, -4, -3, 1
+//   //  )
+//   val r = new MatrixD((3,3), 1, 1, 1,
+//                              4, 3, -1,
+//                              3, 5, 3
+//    )
+//     //val yan = new MatrixD(r)
+//     val yan = new AirYan(r)
+//     yan.lud_npp_new(r)
+//     //yan.lud_ip()
+//     //val v = new VectorD(1,4,6)
+//     //yan.solveM(yan.lud_npp_new(r),v)
+    var rvm: VariateMat = null  
+    println("matrix is : "+ rvm)
+    rvm = RandomMatD (10, 11, 1, 0, 1, 0) 
+    println("matrix is : "+ rvm)
+    println ("mean = " + rvm.mean)
+    println (rvm.gen* 0.01)
+     println ("Test: RandomMatD random correlated matrix generation --------------------")
+     val x = rvm.gen* 0.01
+     println ("x = " + x)
+
+
+    val q = new MatrixD((4,4), 2, 4, 1, -3,
+                                -1, -2, 2, 4,
+                                 4, 2, -3, 5, 
+                                 5, -4, -3, 1
+       )
+    val Air = new AirYan(q)
+    println("********************")
+    println(Air.square(q))
+    println("********************")
+    var p = new MatrixD(4,4)
+    for(i <- 0 to 3)    q(i) *= p(i) 
+    println(p)
+
 }

@@ -1,4 +1,7 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/pandaxubo/Desktop/Spring_2021/Master_Project_7200/alstest/src/main/scala/MDuse.scala:13:15: value DEBUG is not a member of object scalation.linalgebra.MatrixD[0m
-[0m[[0m[31merror[0m] [0m[0m  val MatrixD.DEBUG = false[0m
-[0m[[0m[31merror[0m] [0m[0m              ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/pandaxubo/Desktop/Spring_2021/Master_Project_7200/alstest/src/main/scala/MDuse.scala:63:18: not found: value Range1[0m
+[0m[[0m[31merror[0m] [0m[0m		for (i <- 0 to Range1-1 ) {[0m
+[0m[[0m[31merror[0m] [0m[0m		               ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/pandaxubo/Desktop/Spring_2021/Master_Project_7200/alstest/src/main/scala/MDuse.scala:64:19: not found: value Range2[0m
+[0m[[0m[31merror[0m] [0m[0m			for (j <- 0 to Range2-1 ) {[0m
+[0m[[0m[31merror[0m] [0m[0m			               ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
