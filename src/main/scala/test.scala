@@ -168,17 +168,21 @@ object AirTest extends App{
      println ("x = " + x)
 
 
-    val q = new MatrixD((4,4), 2, 4, 1, -3,
-                                -1, -2, 2, 4,
-                                 4, 2, -3, 5, 
-                                 5, -4, -3, 1
+    val q = new MatrixD((4,5), 2, 4, 1, -3, 1,
+                                -1, -2, 2, 4, 1,
+                                 4, 2, -3, 5, 1,
+                                 5, -4, -3, 1, 2
        )
     val Air = new AirYan(q)
     println("********************")
     println(Air.square(q))
     println("********************")
-    var p = new MatrixD(4,4)
-    for(i <- 0 to 3)    q(i) *= p(i) 
+    val p = q ** q 
     println(p)
-
+    println("********************")
+    val r = new MatrixD((1,5), 2, 4, 1, -3, 6)
+    println(r(0))
+    println("********************")    
+    var er = eye(q.dim1)**((q.col(0)))
+    println(er)
 }
