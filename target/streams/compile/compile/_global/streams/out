@@ -1,6 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\test.scala:186:41: type mismatch;[0m
-[0m[[0m[31merror[0m] [0m[0m found   : scalation.linalgebra.VectorD[0m
-[0m[[0m[31merror[0m] [0m[0m required: scalation.linalgebra.MatrixD[0m
-[0m[[0m[31merror[0m] [0m[0m    var er = eye(q.dim1).times_ip((q.col(0)))[0m
-[0m[[0m[31merror[0m] [0m[0m                                        ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\CFRecommender.scala:46:23: not found: type MDuse[0m
+[0m[[0m[31merror[0m] [0m[0m        val als = new MDuse(training)[0m
+[0m[[0m[31merror[0m] [0m[0m                      ^[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m
