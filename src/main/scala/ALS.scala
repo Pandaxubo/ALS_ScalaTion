@@ -74,7 +74,7 @@ class ALS(a: MatrixD){
   def optimize_user(X: MatrixD, Y: MatrixD, C: MatrixD, P: MatrixD, nu:Int, nf:Int, r_lambda:Int)={
     val yT = Y.t
     for (i <- X.range1) {
-      print(s"\r user: ${i+1} / "+nu)
+      print(s"\r user: ${i+1} / "+X.dim1)
       //val Cu = diagMR(C, i)
       val Cu = eye(C.dim2) ** C(i)
       //val Cu = C.getDiag().apply
@@ -89,7 +89,7 @@ class ALS(a: MatrixD){
   def optimize_item(X: MatrixD, Y: MatrixD, C: MatrixD, P: MatrixD, ni:Int, nf:Int, r_lambda:Int) = {
     val xT = X.t
     for (i <- Y.range1) {
-      print(s"\r item: ${i+1} / "+(ni))
+      print(s"\r item: ${i+1} / "+Y.dim1)
       //val Ci = diagMC(C, i)
       val Ci = eye(C.dim1) ** C.col(i)
       val xT_Ci_x = xT * Ci * X
@@ -100,7 +100,7 @@ class ALS(a: MatrixD){
     println()
   }
 
-  def ALSTrain() = {
+  def ALSTrain(): MatrixD = {
     val target = new ALS(a)
 
     var X = RandomMatD (target.nu, target.nf, 1, 0, 1, 0).gen* 0.01
@@ -161,6 +161,7 @@ class ALS(a: MatrixD){
     println("----------------final predict----------------")
     
     //println(predict)
+    predict
     }
 }
 

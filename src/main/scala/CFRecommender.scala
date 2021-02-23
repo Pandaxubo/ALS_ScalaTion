@@ -16,7 +16,7 @@ import MatrixD.eye
 
 
 class CFRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
-    private var predicted    = new MatrixD(m, n)                                // Matrix for storing SVD predicted values
+    private var predicted  = new MatrixD(m, n)                                // Matrix for storing SVD predicted values
     private val ratings = makeRatings(input, m, n)                              // original ratings matrix
     private var training = new MatrixD(ratings.dim1, ratings.dim2)              // training dataset
     private var copy_training = new MatrixD(ratings.dim1, ratings.dim2)         // copy of training dataset
@@ -44,7 +44,7 @@ class CFRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
 
     def ALS{
         val als = new ALS(training)
-        als.ALSTrain
+        predicted = als.ALSTrain()
     }
 }
 
@@ -54,8 +54,8 @@ object CFRecommenderTest extends App{
     val data_file =  BASE_DIR + "/data/sorted_data.txt"
     MatrixI.setSp('\t')
     var input   =  MatrixI(data_file)
-    input.setCol(0, input.col(0) -1)
-    input.setCol(1, input.col(1) -1)
+    input.setCol(0, input.col(0)-1)
+    input.setCol(1, input.col(1)-1)
     val (m, n)   = (943, 1682)
     val rec    = new CFRecommender(input, m, n)
     val rating = rec.makeRatings(input, m, n)
@@ -65,12 +65,12 @@ object CFRecommenderTest extends App{
     val test_file  =  BASE_DIR + "/data/u2.test"           // replace u(1-5).test
 
     var train   =  MatrixI(train_file)
-    train.setCol(0, train.col(0) -1)
-    train.setCol(1, train.col(1) -1)
+    train.setCol(0, train.col(0)-1)
+    train.setCol(1, train.col(1)-1)
 
     var tester   =  MatrixI(test_file)
-    tester.setCol(0, tester.col(0) -1)
-    tester.setCol(1, tester.col(1) -1)
+    tester.setCol(0, tester.col(0)-1)
+    tester.setCol(1, tester.col(1)-1)
 
     rec.genTrain2(train)
 
