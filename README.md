@@ -11,12 +11,16 @@ The testing dataset is MovieLens 100k. We use MAE and RMSE to judge the quality.
 
 For recommender algorithm:
 To run the code:(In bash)
+'''bash
 sbt 
 compile 
 runMain CFRecommenderTest
+'''
 
 Also you can just run ALSTest, and that is a pure object for Matrix Factorization:
 To run the code:(In bash)
+'''bash
 sbt 
 compile 
 runMain ALSTest
+'''
