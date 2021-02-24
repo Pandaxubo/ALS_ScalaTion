@@ -161,7 +161,7 @@ class ALS(a: MatrixD){
     println("----------------final predict----------------")
     
     //println(predict)
-    predict * 5
+    predict 
   }
 }
 
