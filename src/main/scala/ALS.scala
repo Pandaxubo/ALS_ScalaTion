@@ -54,9 +54,9 @@ class ALS(a: MatrixD){
     val confidence_error = (c**predict_error).sum
     //val confidence_error_round = (c**predict_error_round).sum
     //println("2:"+confidence_error)
-    val mae = confidence_error / (c.dim1*c.dim2)
+    val mae = (c ** (p - xTy)).sum / (100000)
     //val mae_round = confidence_error_round / (c.dim1*c.dim2)
-    val rmse = sqrt(confidence_error / (c.dim1*c.dim2))
+    val rmse = sqrt((c ** (p - xTy)).sum / (100000))
     //val rmse_round = sqrt(confidence_error_round / (c.dim1*c.dim2))
     //println("2.5:"+rmse)
     val regularization =  r_lambda * ((X ** X).sum + (Y ** Y).sum)
@@ -161,8 +161,8 @@ class ALS(a: MatrixD){
     println("----------------final predict----------------")
     
     //println(predict)
-    predict
-    }
+    predict * 5
+  }
 }
 
 
@@ -207,7 +207,7 @@ object ALSTest extends App{
   val c = target.ConC(r)
   
 
-  var interval = 15
+  var interval = 10
 
 
   var predict_errors = new VectorD(interval)

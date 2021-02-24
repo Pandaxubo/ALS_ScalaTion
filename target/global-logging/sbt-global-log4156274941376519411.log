@@ -1,0 +1,6 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(compile, Some(16c105d5-6ac2-49f9-8c2b-5a1ef9b1cfbf), Some(CommandSource(console0)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Compile / compile[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: bloop.integrations.sbt.Offloader$$anon$1@2059f785, check cycles: false, forcegc: true[0m
+[0m[[0m[0minfo[0m] [0m[0mcompiling 3 Scala sources to E:\7200\ALS_ScalaTion\target\scala-2.12\classes ...[0m
+[0m[[0m[32msuccess[0m] [0m[0mTotal time: 2 s, completed 2021年2月24日 下午3:14:02[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m

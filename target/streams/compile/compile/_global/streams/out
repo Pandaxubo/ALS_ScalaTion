@@ -1,9 +1,5 @@
-[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS.scala:161:12: type mismatch;[0m
-[0m[[0m[31merror[0m] [0m[0m found   : Unit[0m
-[0m[[0m[31merror[0m] [0m[0m required: scalation.linalgebra.MatrixD[0m
-[0m[[0m[31merror[0m] [0m[0m    println("----------------final predict----------------")[0m
-[0m[[0m[31merror[0m] [0m[0m           ^[0m
-[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS.scala:165:5: not found: value predict[0m
-[0m[[0m[31merror[0m] [0m[0m    predict[0m
-[0m[[0m[31merror[0m] [0m[0m    ^[0m
-[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\CFRecommender.scala:64:9: overriding method error_metrics in trait Recommender of type (input: scalation.linalgebra.MatrixI)Unit;[0m
+[0m[[0m[31merror[0m] [0m[0m method error_metrics needs `override' modifier[0m
+[0m[[0m[31merror[0m] [0m[0m    def error_metrics (input: MatrixI)[0m
+[0m[[0m[31merror[0m] [0m[0m        ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m
