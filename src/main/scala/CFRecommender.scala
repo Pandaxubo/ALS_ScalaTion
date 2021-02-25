@@ -50,11 +50,11 @@ class CFRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
 
 
     def ConTestP(a: MatrixI) : MatrixI = {
-        val P = a.copy()
-            for (i <- a.range1 ) {
-                for (j <- a.range2 ) {
-            if(P(i,j) > 0)  
-            P(i,j) = 1
+        val P = makeRatings(a, m, n).toInt
+            for (i <- P.range1 ) {
+                for (j <- P.range2 ) {
+                    if(P(i,j) > 0)  
+                        P(i,j) = 1
                 }
             }
         P

@@ -109,7 +109,7 @@ class ALS(a: MatrixD){
     val p = target.ConP(target.nu,target.ni)
     val c = target.ConC(a)
 
-    val interval = 10
+    val interval = 1
 
     var predict_errors = new VectorD(interval)
     var confidence_errors = new VectorD(interval)
