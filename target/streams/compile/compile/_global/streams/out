@@ -1,5 +1,34 @@
-[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\CFRecommender.scala:64:9: overriding method error_metrics in trait Recommender of type (input: scalation.linalgebra.MatrixI)Unit;[0m
-[0m[[0m[31merror[0m] [0m[0m method error_metrics needs `override' modifier[0m
-[0m[[0m[31merror[0m] [0m[0m    def error_metrics (input: MatrixI)[0m
-[0m[[0m[31merror[0m] [0m[0m        ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:104:67: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : Double[0m
+[0m[[0m[31merror[0m] [0m[0m required: Int[0m
+[0m[[0m[31merror[0m] [0m[0m          target.optimize_user(X, Y, target.nu, target.nf, target.r_lambda)[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                  ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:105:67: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : Double[0m
+[0m[[0m[31merror[0m] [0m[0m required: Int[0m
+[0m[[0m[31merror[0m] [0m[0m          target.optimize_item(X, Y, target.ni, target.nf, target.r_lambda)[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                  ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:113:121: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : Double[0m
+[0m[[0m[31merror[0m] [0m[0m required: Int[0m
+[0m[[0m[31merror[0m] [0m[0m      val (predict_error, confidence_error, mae, rmse, regularization, total_loss) = target.Lossf(predict, X, Y, target.r_lambda)[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                                                                        ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:116:44: too many arguments (2) for method +: (s: (Int, Double))scalation.linalgebra.VectorD[0m
+[0m[[0m[31merror[0m] [0m[0m      predict_errors = predict_errors + (i,predict_error)[0m
+[0m[[0m[31merror[0m] [0m[0m                                           ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:117:50: too many arguments (2) for method +: (s: (Int, Double))scalation.linalgebra.VectorD[0m
+[0m[[0m[31merror[0m] [0m[0m      confidence_errors = confidence_errors + (i,confidence_error)[0m
+[0m[[0m[31merror[0m] [0m[0m                                                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:118:55: too many arguments (2) for method +: (s: (Int, Double))scalation.linalgebra.VectorD[0m
+[0m[[0m[31merror[0m] [0m[0m      regularization_list = regularization_list + (i, regularization)[0m
+[0m[[0m[31merror[0m] [0m[0m                                                      ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:119:40: too many arguments (2) for method +: (s: (Int, Double))scalation.linalgebra.VectorD[0m
+[0m[[0m[31merror[0m] [0m[0m      total_losses = total_losses + (i,total_loss)[0m
+[0m[[0m[31merror[0m] [0m[0m                                       ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:120:24: too many arguments (2) for method +: (s: (Int, Double))scalation.linalgebra.VectorD[0m
+[0m[[0m[31merror[0m] [0m[0m      maes = maes + (i,mae)[0m
+[0m[[0m[31merror[0m] [0m[0m                       ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:121:26: too many arguments (2) for method +: (s: (Int, Double))scalation.linalgebra.VectorD[0m
+[0m[[0m[31merror[0m] [0m[0m      rmses = rmses + (i,rmse)[0m
+[0m[[0m[31merror[0m] [0m[0m                         ^[0m
+[0m[[0m[31merror[0m] [0m[0m9 errors found[0m

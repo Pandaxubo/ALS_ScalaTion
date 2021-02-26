@@ -21,7 +21,6 @@ class CFRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
     private var training = new MatrixD(ratings.dim1, ratings.dim2)              // training dataset
     private var copy_training = new MatrixD(ratings.dim1, ratings.dim2)         // copy of training dataset
     private val als = new ALS(training)
-    var conc = als.ConC(predicted)
     
 
 
@@ -63,7 +62,7 @@ class CFRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
 
     def error_metric (input: MatrixI)
     {   
-        conc = makeRatings(input, m, n)* 40 + 1
+        var conc = makeRatings(input, m, n)* 40 + 1
         var conp = ConTestP(input)
         var sum1, sum2, sum3, sum4 = 0.0
         for (i <- input.range1) {

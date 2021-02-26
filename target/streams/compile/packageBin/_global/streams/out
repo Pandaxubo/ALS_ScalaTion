@@ -36,6 +36,8 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  E:\7200\ALS_ScalaTion\target\scala-2.12\classes\ALSTest$delayedInit$body.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	ALSTest.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  E:\7200\ALS_ScalaTion\target\scala-2.12\classes\ALSTest.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	ALS_E.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  E:\7200\ALS_ScalaTion\target\scala-2.12\classes\ALS_E.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	CFRecommender.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  E:\7200\ALS_ScalaTion\target\scala-2.12\classes\CFRecommender.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	CFRecommenderTest$.class[0m
@@ -44,6 +46,14 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  E:\7200\ALS_ScalaTion\target\scala-2.12\classes\CFRecommenderTest$delayedInit$body.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	CFRecommenderTest.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  E:\7200\ALS_ScalaTion\target\scala-2.12\classes\CFRecommenderTest.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	CFRecommenderTest_E$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  E:\7200\ALS_ScalaTion\target\scala-2.12\classes\CFRecommenderTest_E$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	CFRecommenderTest_E$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  E:\7200\ALS_ScalaTion\target\scala-2.12\classes\CFRecommenderTest_E$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	CFRecommenderTest_E.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  E:\7200\ALS_ScalaTion\target\scala-2.12\classes\CFRecommenderTest_E.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	CFRecommender_E.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  E:\7200\ALS_ScalaTion\target\scala-2.12\classes\CFRecommender_E.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	Demo$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  E:\7200\ALS_ScalaTion\target\scala-2.12\classes\Demo$.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	Demo.class[0m
