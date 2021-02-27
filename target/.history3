@@ -126,3 +126,26 @@
 1614290521591:runMain CFRecommenderTest_E
 1614294866287:compile
 1614294888376:runMain CFRecommenderTest_E
+1614316637558:* predict
+1614316638895:runMain CFRecommenderTest_E
+1614372708356:compile
+1614372781356:runMain CFRecommenderTest_E2
+1614372805278:compile
+1614372807948:runMain CFRecommenderTest_E2
+1614372818384:compile
+1614372832129:runMain CFRecommenderTest_E2
+1614375806138:runMain CFRecommenderTest_E3
+1614377184581:runMain CFRecommenderTest_E2
+1614390247742:runMain CFRecommenderTest_E
+1614391162043:runMain CFRecommenderTest
+1614391479551:runMain CFRecommenderTest_E
+1614391645770:runMain CFRecommenderTest_E2
+1614391874711:runMain CFRecommenderTest_E3
+1614392630649:runMain CFRecommenderTest_E2
+1614392869451:runMain CFRecommenderTest_E
+1614393183090:runMain CFRecommenderTest_E2
+1614393475198:runMain CFRecommenderTest_E3
+1614393953819:runMain CFRecommenderTest_E
+1614394178400:runMain CFRecommenderTest_E2
+1614394480939:runMain CFRecommenderTest_E3
+1614394959316:runMain CFRecommenderTest2

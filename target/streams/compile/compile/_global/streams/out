@@ -1,34 +1,184 @@
-[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:104:67: type mismatch;[0m
-[0m[[0m[31merror[0m] [0m[0m found   : Double[0m
-[0m[[0m[31merror[0m] [0m[0m required: Int[0m
-[0m[[0m[31merror[0m] [0m[0m          target.optimize_user(X, Y, target.nu, target.nf, target.r_lambda)[0m
-[0m[[0m[31merror[0m] [0m[0m                                                                  ^[0m
-[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:105:67: type mismatch;[0m
-[0m[[0m[31merror[0m] [0m[0m found   : Double[0m
-[0m[[0m[31merror[0m] [0m[0m required: Int[0m
-[0m[[0m[31merror[0m] [0m[0m          target.optimize_item(X, Y, target.ni, target.nf, target.r_lambda)[0m
-[0m[[0m[31merror[0m] [0m[0m                                                                  ^[0m
-[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:113:121: type mismatch;[0m
-[0m[[0m[31merror[0m] [0m[0m found   : Double[0m
-[0m[[0m[31merror[0m] [0m[0m required: Int[0m
-[0m[[0m[31merror[0m] [0m[0m      val (predict_error, confidence_error, mae, rmse, regularization, total_loss) = target.Lossf(predict, X, Y, target.r_lambda)[0m
-[0m[[0m[31merror[0m] [0m[0m                                                                                                                        ^[0m
-[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:116:44: too many arguments (2) for method +: (s: (Int, Double))scalation.linalgebra.VectorD[0m
-[0m[[0m[31merror[0m] [0m[0m      predict_errors = predict_errors + (i,predict_error)[0m
-[0m[[0m[31merror[0m] [0m[0m                                           ^[0m
-[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:117:50: too many arguments (2) for method +: (s: (Int, Double))scalation.linalgebra.VectorD[0m
-[0m[[0m[31merror[0m] [0m[0m      confidence_errors = confidence_errors + (i,confidence_error)[0m
-[0m[[0m[31merror[0m] [0m[0m                                                 ^[0m
-[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:118:55: too many arguments (2) for method +: (s: (Int, Double))scalation.linalgebra.VectorD[0m
-[0m[[0m[31merror[0m] [0m[0m      regularization_list = regularization_list + (i, regularization)[0m
-[0m[[0m[31merror[0m] [0m[0m                                                      ^[0m
-[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:119:40: too many arguments (2) for method +: (s: (Int, Double))scalation.linalgebra.VectorD[0m
-[0m[[0m[31merror[0m] [0m[0m      total_losses = total_losses + (i,total_loss)[0m
-[0m[[0m[31merror[0m] [0m[0m                                       ^[0m
-[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:120:24: too many arguments (2) for method +: (s: (Int, Double))scalation.linalgebra.VectorD[0m
-[0m[[0m[31merror[0m] [0m[0m      maes = maes + (i,mae)[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:155:10: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m    for(i <- predict.range1)[0m
+[0m[[0m[31merror[0m] [0m[0m         ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:155:13: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m    for(i <- predict.range1)[0m
+[0m[[0m[31merror[0m] [0m[0m            ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:156:1: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m      for(j <- predict.range2){[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:156:2: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m      for(j <- predict.range2){[0m
+[0m[[0m[31merror[0m] [0m[0m ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:156:3: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m      for(j <- predict.range2){[0m
+[0m[[0m[31merror[0m] [0m[0m  ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:156:4: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m      for(j <- predict.range2){[0m
+[0m[[0m[31merror[0m] [0m[0m   ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:156:5: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m      for(j <- predict.range2){[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:156:6: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m      for(j <- predict.range2){[0m
+[0m[[0m[31merror[0m] [0m[0m     ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:156:12: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m      for(j <- predict.range2){[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:156:15: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m      for(j <- predict.range2){[0m
+[0m[[0m[31merror[0m] [0m[0m              ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:157:1: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        if(predict(i,j) >= 5.0)[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:157:2: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        if(predict(i,j) >= 5.0)[0m
+[0m[[0m[31merror[0m] [0m[0m ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:157:3: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        if(predict(i,j) >= 5.0)[0m
+[0m[[0m[31merror[0m] [0m[0m  ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:157:4: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        if(predict(i,j) >= 5.0)[0m
+[0m[[0m[31merror[0m] [0m[0m   ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:157:5: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        if(predict(i,j) >= 5.0)[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:157:6: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        if(predict(i,j) >= 5.0)[0m
+[0m[[0m[31merror[0m] [0m[0m     ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:157:7: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        if(predict(i,j) >= 5.0)[0m
+[0m[[0m[31merror[0m] [0m[0m      ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:157:8: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        if(predict(i,j) >= 5.0)[0m
+[0m[[0m[31merror[0m] [0m[0m       ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:157:24: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        if(predict(i,j) >= 5.0)[0m
 [0m[[0m[31merror[0m] [0m[0m                       ^[0m
-[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:121:26: too many arguments (2) for method +: (s: (Int, Double))scalation.linalgebra.VectorD[0m
-[0m[[0m[31merror[0m] [0m[0m      rmses = rmses + (i,rmse)[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:157:27: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        if(predict(i,j) >= 5.0)[0m
+[0m[[0m[31merror[0m] [0m[0m                          ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:158:1: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 5.0[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:158:2: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 5.0[0m
+[0m[[0m[31merror[0m] [0m[0m ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:158:3: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 5.0[0m
+[0m[[0m[31merror[0m] [0m[0m  ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:158:4: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 5.0[0m
+[0m[[0m[31merror[0m] [0m[0m   ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:158:5: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 5.0[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:158:6: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 5.0[0m
+[0m[[0m[31merror[0m] [0m[0m     ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:158:7: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 5.0[0m
+[0m[[0m[31merror[0m] [0m[0m      ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:158:8: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 5.0[0m
+[0m[[0m[31merror[0m] [0m[0m       ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:158:9: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 5.0[0m
+[0m[[0m[31merror[0m] [0m[0m        ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:158:10: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 5.0[0m
+[0m[[0m[31merror[0m] [0m[0m         ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:158:23: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 5.0[0m
+[0m[[0m[31merror[0m] [0m[0m                      ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:158:25: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 5.0[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:159:1: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        else(predict(i,j) < 1.0)[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:159:2: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        else(predict(i,j) < 1.0)[0m
+[0m[[0m[31merror[0m] [0m[0m ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:159:3: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        else(predict(i,j) < 1.0)[0m
+[0m[[0m[31merror[0m] [0m[0m  ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:159:4: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        else(predict(i,j) < 1.0)[0m
+[0m[[0m[31merror[0m] [0m[0m   ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:159:5: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        else(predict(i,j) < 1.0)[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:159:6: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        else(predict(i,j) < 1.0)[0m
+[0m[[0m[31merror[0m] [0m[0m     ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:159:7: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        else(predict(i,j) < 1.0)[0m
+[0m[[0m[31merror[0m] [0m[0m      ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:159:8: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        else(predict(i,j) < 1.0)[0m
+[0m[[0m[31merror[0m] [0m[0m       ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:159:26: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        else(predict(i,j) < 1.0)[0m
 [0m[[0m[31merror[0m] [0m[0m                         ^[0m
-[0m[[0m[31merror[0m] [0m[0m9 errors found[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:159:28: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m        else(predict(i,j) < 1.0)[0m
+[0m[[0m[31merror[0m] [0m[0m                           ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:160:1: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 1.0[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:160:2: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 1.0[0m
+[0m[[0m[31merror[0m] [0m[0m ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:160:3: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 1.0[0m
+[0m[[0m[31merror[0m] [0m[0m  ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:160:4: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 1.0[0m
+[0m[[0m[31merror[0m] [0m[0m   ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:160:5: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 1.0[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:160:6: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 1.0[0m
+[0m[[0m[31merror[0m] [0m[0m     ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:160:7: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 1.0[0m
+[0m[[0m[31merror[0m] [0m[0m      ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:160:8: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 1.0[0m
+[0m[[0m[31merror[0m] [0m[0m       ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:160:9: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 1.0[0m
+[0m[[0m[31merror[0m] [0m[0m        ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:160:10: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 1.0[0m
+[0m[[0m[31merror[0m] [0m[0m         ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:160:23: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 1.0[0m
+[0m[[0m[31merror[0m] [0m[0m                      ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:160:25: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m          predict(i,j) = 1.0[0m
+[0m[[0m[31merror[0m] [0m[0m                        ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:161:1: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m      }[0m
+[0m[[0m[31merror[0m] [0m[0m^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:161:2: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m      }[0m
+[0m[[0m[31merror[0m] [0m[0m ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:161:3: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m      }[0m
+[0m[[0m[31merror[0m] [0m[0m  ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:161:4: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m      }[0m
+[0m[[0m[31merror[0m] [0m[0m   ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:161:5: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m      }[0m
+[0m[[0m[31merror[0m] [0m[0m    ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:161:6: illegal character '\u00a0'[0m
+[0m[[0m[31merror[0m] [0m[0m      }[0m
+[0m[[0m[31merror[0m] [0m[0m     ^[0m
+[0m[[0m[31merror[0m] [0m[0mE:\7200\ALS_ScalaTion\src\main\scala\ALS_E.scala:172:3: illegal start of simple expression[0m
+[0m[[0m[31merror[0m] [0m[0m  }[0m
+[0m[[0m[31merror[0m] [0m[0m  ^[0m
+[0m[[0m[31merror[0m] [0m[0m61 errors found[0m

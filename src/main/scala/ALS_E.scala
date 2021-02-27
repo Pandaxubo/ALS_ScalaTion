@@ -1,5 +1,6 @@
 
 import scalation.linalgebra.MatrixD
+import scalation.linalgebra.MatrixI
 import scalation.linalgebra.Eigenvalue
 import scalation.linalgebra.Eigenvector
 import scalation.linalgebra._
@@ -11,14 +12,17 @@ import scala.math._
 import scalation.plot.Plot
 import scala.io.Source.fromFile
 import scalation.math.double_exp
+import scalation.linalgebra.VectorD
+import scalation.util.SortingD
+import scala.util.Sorting.quickSort
 
 
 import MatrixD.eye
 
 class ALS_E(a: MatrixD){
   //Initialize parameters
-  var r_lambda = 40 //normalization parameter
-  var nf = 200  //dimension of latent vector of each user and item
+  var r_lambda = 1 //normalization parameter
+  var nf = 10  //dimension of latent vector of each user and item
   val ni = a.dim2 //number of items 
   val nu = a.dim1 //number of users 
 
@@ -74,14 +78,16 @@ class ALS_E(a: MatrixD){
     println()
   }
 
-
-
+  def getAverage(file_name: String): Double = {
+    val tar = MatrixI(file_name)
+    tar.col(2).sum / tar.dim1.toDouble
+  }
 
   def ALSTrain(): MatrixD = {
     val target = new ALS_E(a)
 
-    var X = RandomMatD (target.nu, target.nf, 1, 0, 1, 0).gen* 0.01
-    var Y = RandomMatD (target.ni, target.nf, 1, 0, 1, 0).gen* 0.01
+    var X = RandomMatD (target.nu, target.nf, 5, 1, 1, 0).gen* 0.00001
+    var Y = RandomMatD (target.ni, target.nf, 5, 1, 1, 0).gen* 0.00001
 
 
     val interval = 10
@@ -100,13 +106,14 @@ class ALS_E(a: MatrixD){
       println("----------------step "+i+"----------------")
       if (i != 0){
           val start_Optimize = System.nanoTime
-          target.optimize_user(X, Y, target.nu, target.nf, target.r_lambda)
+          
           target.optimize_item(X, Y, target.ni, target.nf, target.r_lambda)
+          target.optimize_user(X, Y, target.nu, target.nf, target.r_lambda)
           val opt_Duration = (System.nanoTime - start_Optimize) / 1e9d
-          println{"optimize function running time: "+opt_Duration*1000+" ms"}
+          //println{"optimize function running time: "+opt_Duration*1000+" ms"}
       }
       
-      val predict = X * (Y.t)
+      val predict = X * (Y.t) 
 
       var start_Loss = System.nanoTime
       val (predict_error, confidence_error, mae, rmse, regularization, total_loss) = target.Lossf(predict, X, Y, target.r_lambda)
@@ -121,25 +128,52 @@ class ALS_E(a: MatrixD){
       total_time_loss += loss_Duration
 
       //println("----------------step "+i+"----------------")
-      println("predict error: " + predict_error)
-      println("confidence error: " + confidence_error)
-      println("mae: " + mae)
-      //println("mae_round: " + mae_round)
-      println("rmse: " + rmse)
-      //println("rmse round: " + rmse_round)
-      println("regularization: " + regularization)
-      println("total loss: " + total_loss)
-      println{"loss function running time: "+loss_Duration*1000+" ms"}
+      // println("predict error: " + predict_error)
+      // println("confidence error: " + confidence_error)
+      // println("mae: " + mae)
+      // //println("mae_round: " + mae_round)
+      // println("rmse: " + rmse)
+      // //println("rmse round: " + rmse_round)
+      // println("regularization: " + regularization)
+      // println("total loss: " + total_loss)
+      //println{"loss function running time: "+loss_Duration*1000+" ms"}
     }
-  
 
-    var predict = X * (Y.t) 
-    predict = predict * (5/predict.max(predict.dim1)) 
-    println("----------------final predict----------------")
+
     val BASE_DIR = System.getProperty("user.dir")
+    val test_file =  BASE_DIR + "/data/u2.test"
+    val ave = getAverage(test_file)
+    var predict = X * (Y.t)  + ave 
+    var ss = predict.flatten.toDouble.toArray
+    scala.util.Sorting.quickSort(ss)
+    
+    println("min " + (ss(0)))
+    println("max " + (ss(943*1682-1)))
+    println("median " + (ss((943*1682-1))+ss(0))/2)
+    println("sss " + predict.max(predict.range1,predict.range2))
+
+    for(i <- predict.range1)
+      for(j <- predict.range2)
+        if(predict(i,j) > 5.0 )
+          predict(i,j) = 5.0
+        else if(predict(i,j) < 1.0)
+          predict(i,j) = 1.0
+//     for(i <- predict.range1)
+//       for(j <- predict.range2){
+//         if(predict(i,j) >= 5.0)
+//           predict(i,j) = 5.0
+//         else(predict(i,j) < 1.0)
+//           predict(i,j) = 1.0
+//       }
+    //predict = (predict + abs(predict.min(predict.range1,predict.range2)))
+    //predict = ((predict) - predict.min(predict.range1,predict.range2)) //((ss((943*1682-1))+ss(0))/2)//2.43
+    //predict = predict*(4/predict.max(predict.range1,predict.range2))+ 1
+    println("----------------final predict----------------")
+    println("max " + predict.max(predict.range1,predict.range2))
+    println("min " + predict.min(predict.range1,predict.range2))
     val data_file =  BASE_DIR + "/data/predict.txt"
     predict.write (data_file)
-    //println(predict)
+    println("average = "+ave)
     predict 
   }
 }
