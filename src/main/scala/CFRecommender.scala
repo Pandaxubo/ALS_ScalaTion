@@ -47,18 +47,6 @@ class CFRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
     }
 
 
-    def ConTestP(a: MatrixI) : MatrixI = {
-        val P = makeRatings(a, m, n).toInt
-            for (i <- P.range1 ) {
-                for (j <- P.range2 ) {
-                    if(P(i,j) > 0)  
-                        P(i,j) = 1
-                }
-            }
-        P
-    }
-
-
     //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**  Generates the training matrix for the dataset for Phase 2
       *  @param exl : vector of index values which will be excluded in the train
@@ -91,29 +79,29 @@ class CFRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
 
 
 
-    def error_metric (input: MatrixI)
-    {   
-        var conc = makeRatings(input, m, n)* 40 + 1
-        var conp = ConTestP(input)
-        var sum1, sum2, sum3, sum4 = 0.0
-        for (i <- input.range1) {
-            //val a = input(i, 2).toDouble
-            val a = conp (input(i, 0), input(i, 1))
-            val c = conc (input(i, 0), input(i, 1))
-            val p = rate (input(i, 0), input(i, 1))
+    // def error_metric (input: MatrixI)
+    // {   
+    //     var conc = makeRatings(input, m, n)* 40 + 1
+    //     //var conp = ConTestP(input)
+    //     var sum1, sum2, sum3, sum4 = 0.0
+    //     for (i <- input.range1) {
+    //         //val a = input(i, 2).toDouble
+    //         val a = conp (input(i, 0), input(i, 1))
+    //         val c = conc (input(i, 0), input(i, 1))
+    //         val p = rate (input(i, 0), input(i, 1))
             
-            if (! p.isNaN) {
-                sum1 += c * abs(a - p)                               // non rounded MAE
-                sum2 += c * abs (a - round (p))                       // rounded MAE
-                sum3 += c * (a - p) * (a - p)                         // non rounded RMSE
-                sum4 += c * (a - round (p)) * (a - round (p))         // rounded RMSE
-            } // if
-        } //for
-        println ("MAE  Non-Rounded = " + sum1 / input.dim1)
-        println ("MAE      Rounded = " + sum2 / input.dim1)
-        println ("RMSE Non-Rounded = " + sqrt (sum3 / input.dim1))
-        println ("RMSE     Rounded = " + sqrt (sum4 / input.dim1))
-    } // error metrics
+    //         if (! p.isNaN) {
+    //             sum1 += c * abs(a - p)                               // non rounded MAE
+    //             sum2 += c * abs (a - round (p))                       // rounded MAE
+    //             sum3 += c * (a - p) * (a - p)                         // non rounded RMSE
+    //             sum4 += c * (a - round (p)) * (a - round (p))         // rounded RMSE
+    //         } // if
+    //     } //for
+    //     println ("MAE  Non-Rounded = " + sum1 / input.dim1)
+    //     println ("MAE      Rounded = " + sum2 / input.dim1)
+    //     println ("RMSE Non-Rounded = " + sqrt (sum3 / input.dim1))
+    //     println ("RMSE     Rounded = " + sqrt (sum4 / input.dim1))
+    // } // error metrics
 }
 
 object CFRecommenderTest extends App{
@@ -143,6 +131,19 @@ object CFRecommenderTest extends App{
 
     rec.genTrain2(train)
 
+    def ConTestP(a: MatrixI) : MatrixI = {
+        val P = a.copy()
+            for (i <- a.range1 ) {
+                for (j <- a.range2 ) {
+            if(P(i,j) > 0)  
+              P(i,j) = 1
+                }
+            }
+        P
+    }
+
+    tester = ConTestP(tester)
+
 
     for(i <- 0 until 1) {
         val t = time{
@@ -153,7 +154,7 @@ object CFRecommenderTest extends App{
             } //time
             println("Prediction Time")                              // testing time
             val t2 = time {
-                rec.error_metric(tester)
+                rec.error_metrics(tester)
             } // time
         } //time
     } // for
