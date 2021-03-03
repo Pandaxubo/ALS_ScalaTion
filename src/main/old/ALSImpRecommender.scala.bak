@@ -80,6 +80,37 @@ class ALSImpRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
         copy_training = training.copy()
     } 
 
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /** Test 1: Print MAE and RMSE metrics based on the final predictions for
+     *  the test dataset.
+     *  This function needs to rewrite since we need to calculate MPR value.
+     *  @param input  the test portion of the original 4-column input matrix
+     */
+    def error_metric (input: MatrixI)
+    {   
+       var sum1, sum2, sum3, sum4, sum5, sum6 = 0.0
+       var cp = predicted.copy()
+       cp = cp - cp.min(cp.range1, cp.range2)
+       cp = cp/cp.max(cp.range1, cp.range2)
+        for (i <- input.range1) {
+            val a = input(i, 2).toDouble
+            val p = rate (input(i, 0), input(i, 1))
+            if (! p.isNaN) {
+                sum1 += abs (a - p)                               // non rounded MAE
+                sum2 += abs (a - round (p))                       // rounded MAE
+                sum3 += (a - p) * (a - p)                         // non rounded RMSE
+                sum4 += (a - round (p)) * (a - round (p))         // rounded RMSE
+                sum5 += a*cp(input(i, 0), input(i, 1))
+                sum6 += a
+            } // if
+        } //for
+        println ("MAE  Non-Rounded = " + sum1 / input.dim1)
+        println ("MAE      Rounded = " + sum2 / input.dim1)
+        println ("RMSE Non-Rounded = " + sqrt (sum3 / input.dim1))
+        println ("RMSE     Rounded = " + sqrt (sum4 / input.dim1))
+        println ("Predict precentage max: "+cp.max(cp.range1, cp.range2)+", min: "+cp.min(cp.range1, cp.range2))
+        println ("MPR Non-Rounded = " + sqrt (sum5 / sum6))
+    } // error metrics
 }
 
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
