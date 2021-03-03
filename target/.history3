@@ -150,3 +150,22 @@
 1614394480939:runMain CFRecommenderTest_E3
 1614394959316:runMain CFRecommenderTest2
 1614398341873:compile
+1614398612149:runMain CFRecommenderTest2
+1614492625257:runMain CFRecommenderTest
+1614526834693:runMain CFRecommenderTest2
+1614526945063:runMain CFRecommenderTest
+1614575050638:runMain test
+1614575122975:runMain CFRecommenderTest
+1614734264946:runMain ALSTest
+1614734753099:runMain ALSImplicitTest
+1614738735596:compile
+1614738899692:runMain ALSImplicitTest
+1614738918227:runMain ALSImpRecommenderTest
+1614739273653:sbt
+1614739287229:runMain ALSExplicitTest
+1614739509942:compile
+1614739529137:runMain ALSExplicitTest
+1614739698052:runMain ALSExplicitRecommenderTest
+1614739708875:runMain ALSExpRecommenderTest
+1614739951490:runMain ALSExpRecommenderTest2
+1614740303236:runMain ALSExpRecommenderTest
