@@ -6,17 +6,34 @@ import scala.math.abs
 
 import MatrixD.eye
 
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/** The `ALSExplicit` class is used to predict the missing values of an input matrix
+ *  by applying Alternating Least Square to factor the matrix.
+ *  Once the factors are obtained the missing value in the matrix is obtained as the 
+ *  dot product of 'x' and 'y.t', where
+ *  <p>
+ *      x is the user-factors vector (nf * n)
+ *      y is the item-factors vector (nf * m)
+ *      predict (i, j) = x dot y.t
+ *  <p>
+ *------------------------------------------------------------------------------
+ *  @param a  the input data matrix
+ */
 class ALSExplicit(a: MatrixD){
-  //Initialize parameters
+
   var r_lambda = 1 //normalization parameter
   var nf = 10  //dimension of latent vector of each user and item
   val ni = a.dim2 //number of items 
   val nu = a.dim1 //number of users 
 
-  //Optimization Function for user and item
-  //X[u] = (yTCuy + lambda*I)^-1yTCuy
-  //Y[i] = (xTCix + lambda*I)^-1xTCix
-  //two formula is the same when it changes X to Y and u to i
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  /**  Optimization Function for user. X[u] = (yTy + lambda*I)^-1yTRu
+    *  @param X  the user-factors vector
+    *  @param Y  the item-factors vector
+    *  @param nu  the input matrix's row
+    *  @param nf  dimension of latent vector of each user and item
+    *  @param r_lambda  the normalization parameter
+    */
   def optimize_user(X: MatrixD, Y: MatrixD, nu:Int, nf:Int, r_lambda:Double)={
     val yT = Y.t
     for (i <- X.range1) {
@@ -29,6 +46,14 @@ class ALSExplicit(a: MatrixD){
     println()
   }
 
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  /**  Optimization Function for item. Y[i] = (xTx + lambda*I)^-1xTRi
+    *  @param Y  the item-factors vector
+    *  @param X  the user-factors vector
+    *  @param ni  the input matrix's column
+    *  @param nf  dimension of latent vector of each user and item
+    *  @param r_lambda  the normalization parameter
+    */
   def optimize_item(X: MatrixD, Y: MatrixD, ni:Int, nf:Int, r_lambda:Double) = {
     val xT = X.t
     for (i <- Y.range1) {
@@ -41,25 +66,34 @@ class ALSExplicit(a: MatrixD){
     println()
   }
 
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  /**  Get the average value of the input dataset for normalization
+    *  @param file_name  the input dataset's path
+    */
   def getAverage(file_name: String): Double = {
     val tar = MatrixI(file_name)
     tar.col(2).sum / tar.dim1.toDouble
   }
 
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  /** Train the model to get predict matrix using input dataset.
+    *  @see Matrix Completion via Alternating Least Square(ALS)
+    *  @see http://stanford.edu/~rezab/classes/cme323/S15/notes/lec14.pdf 
+    */
   def train(): MatrixD = {
     val target = new ALSExplicit(a)
 
     var X = RandomMatD (target.nu, target.nf, 5, 1, 1, 0).gen* 0.00001
     var Y = RandomMatD (target.ni, target.nf, 5, 1, 1, 0).gen* 0.00001
 
-    val interval = 10
+    val interval = 10 //iterations
 
     for (i <- 0 until interval) {
       println("----------------step "+i+"----------------")
       if (i != 0){
           target.optimize_user(X, Y, target.nu, target.nf, target.r_lambda)
           target.optimize_item(X, Y, target.ni, target.nf, target.r_lambda)
-      }
+      }//compute X and Y iteratively
       
       val predict = X * (Y.t) 
 
@@ -76,7 +110,11 @@ class ALSExplicit(a: MatrixD){
   }
 }
 
-//under development
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/** The `ALSExplicitTest` companion object is used to perform imputation.
+ *  This part is under development, because here we need implicit data, so r here
+ *  needs data like playing hours(ia will be matrix contains 0-1 here)
+ */
 object ALSExplicitTest extends App{
    val r = new MatrixD ((10, 11), 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0,
                                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
@@ -88,11 +126,11 @@ object ALSExplicitTest extends App{
                                  0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 4,
                                  0, 0, 0, 0, 0, 0, 5, 0, 0, 5, 0,
                                  0, 0, 0, 3, 0, 0, 0, 0, 4, 5, 0
-                                 ) 
+                                 ) //input matrix
     println (s"r = $r")
 
     val als = new ALSExplicit(r)
-    val ia = als.train()
+    val ia = als.train()  //generate predict matrix
     println (s"ia = $ia")
     println ("Predicted value for(5, 6) = " + ia(5, 6))
 }

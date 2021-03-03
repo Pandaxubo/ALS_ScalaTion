@@ -9,9 +9,15 @@ import scala.math.{abs, round, sqrt}
 
 import MatrixD.eye
 
-
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/**  The ALSImpRecommender class is used to perform predictions based on
+  *  Model based Collaborative Filtering techniques (Implicit ALS)
+  *  @param input  original matrix
+  *  @param m      number of rows
+  *  @param n      number of columns
+  */
 class ALSImpRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
-    private var predicted  = new MatrixD(m, n)                                // Matrix for storing SVD predicted values
+    private var predicted = new MatrixD(m, n)                                // Matrix for storing Implicit ALS predicted values
     private val ratings = makeRatings(input, m, n)                              // original ratings matrix
     private var training = new MatrixD(ratings.dim1, ratings.dim2)              // training dataset
     private var copy_training = new MatrixD(ratings.dim1, ratings.dim2)         // copy of training dataset
@@ -19,61 +25,67 @@ class ALSImpRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
 
 
     //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    /** Generate a rating based on Singular value Decompostion of matrix
+    /** Generate a rating based on Implicit ALS of matrix
       *  @param i  user
-      *  @param j item
+      *  @param j  item
       */
     def rate (i: Int, j: Int) : Double = predicted(i, j)
 
 
-      //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    /**  Generates the training matrix for the dataset for Phase 1
-      *  @param train : training data matrix
+    //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**  Generates the training matrix for the dataset for Test 1
+      *  @param train training data matrix
       */
     def genTrain2 (train: MatrixI)
     {
         for (i <- train.range1) training(train(i, 0), train(i, 1)) = train(i, 2)
         copy_training = training.copy()
-    } // genTrain2
+    } 
 
-
+    //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**  Run the ALSImplicit algorithm and get the predict matrix.
+      */
     def ALSImp{
         predicted = als.train()
     }
 
 
     //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    /**  Generates the training matrix for the dataset for Phase 2
-      *  @param exl : vector of index values which will be excluded in the train
-      *  @param input : original data matrix
+    /**  Generates the training matrix for the dataset for Test 2
+      *  @param exl  vector of index values which will be excluded in the train
+      *  @param input  original data matrix
       */
     def genTrainTest (exl: VectorI, input: MatrixI): MatrixD =
     {
         for (i <- input.range1){
             if(exl.indexOf(i) != -1) training(input (i, 0), input (i, 1)) = input(i, 2)
             else training(input (i, 0), input (i, 1)) = 0.0
-        }// for
+        }
         copy_training = training.copy()
         ratings - training
-    } //zRatings
+    } 
             
     //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**  Returns a matrix with replacing all values with 0 beyond the interval specified
-      *  corresponds to Phase 3 of the expermiments
-      *  @param limit : interval start point
-      *  @param input : original data matrix
+      *  corresponds to Test 3 of the expermiments
+      *  @param limit  interval start point
+      *  @param input  original data matrix
       */
     def zRatings (limit : Int, input: MatrixI)
     {
         for (i <- input.range1){
             if(i <= limit) training(input (i, 0), input (i, 1)) = input(i, 2)
             else training(input (i, 0), input (i, 1)) = 0.0
-        }// for
+        }
         copy_training = training.copy()
-    } //zRatings
+    } 
 
-
-    //this metrics function needs to rewrite since we need to calculate MPR value 
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /** Test 1: Print MAE and RMSE metrics based on the final predictions for
+     *  the test dataset.
+     *  This function needs to rewrite since we need to calculate MPR value.
+     *  @param input  the test portion of the original 4-column input matrix
+     */
     def error_metric (input: MatrixI)
     {   
        var sum1, sum2, sum3, sum4, sum5, sum6 = 0.0
@@ -101,6 +113,10 @@ class ALSImpRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
     } // error metrics
 }
 
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/** The `ALSImpRecommenderTest` object is used to test the `Recommender` Trait using the MovieLens dataset.
+  *  > runMain ALSImpRecommenderTest
+  */
 object ALSImpRecommenderTest extends App{
     val BASE_DIR = System.getProperty("user.dir")
     val data_file =  BASE_DIR + "/data/sorted_data.txt"
@@ -125,6 +141,11 @@ object ALSImpRecommenderTest extends App{
 
     rec.genTrain2(train)
 
+
+    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /** Implicit ALS needs binary rating matrix as actual value
+      *  @param a  testing matrix
+      */
     def ConTestP(a: MatrixI) : MatrixI = {
         val P = a.copy()
             for (i <- a.range1 ) {
@@ -151,6 +172,11 @@ object ALSImpRecommenderTest extends App{
     } // for
 }
 
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/** The `ALSImpRecommenderTest2` object is used to test the `Recommender` Trait using the MovieLens dataset.
+  * Uses K-fold validation and adds HIT value, which means the predict value is the same as original value.
+  *  > runMain ALSImpRecommenderTest2
+  */
 object ALSImpRecommenderTest2 extends App
 {
     val BASE_DIR = System.getProperty("user.dir")
@@ -199,19 +225,23 @@ object ALSImpRecommenderTest2 extends App
                 rdiff2(i) = stats(1).rms
                 hit(i) = stats(2).mean * 100
                 for (j <- 0 until 3) stats(j).reset()
-            } // for
+            } 
 
             println("MAE            = "+diff.mean)
             println("MAE rounded    = "+rdiff.mean)
             println("RMSE           = "+diff2.mean)
             println("RMSE rounded   = "+rdiff2.mean)
             println("HIT            = "+hit.mean)
-        } // time
-    } // for
+        } 
+    } 
 }
 
 
-
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/** The `ALSImpRecommenderTest3` object is used to test the `Recommender` Trait using the MovieLens dataset.
+  * Uses cross validation.
+  *  > runMain ALSImpRecommenderTest3
+  */
 object ALSImpRecommenderTest3 extends App
 {
     val BASE_DIR = System.getProperty("user.dir")
@@ -238,7 +268,7 @@ object ALSImpRecommenderTest3 extends App
     for (i <- INT_START until INTERVALS) {
         rec.zRatings((i-1) * INT_SIZE, input)                           // get Zeroes Rating matrix
         println(i)
-        rec.ALSImp                                                    // Pure SVD                                     
+        rec.ALSImp                                                    // Implicit ALS                                   
         rec.test((i-1) * INT_SIZE, i * INT_SIZE, input)
         val stats = rec.getStats
         diff(i-INT_START)   = stats(0).ma

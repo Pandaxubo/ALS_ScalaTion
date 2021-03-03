@@ -5,15 +5,35 @@ import scala.math.abs
 
 import MatrixD.eye
 
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/** The `ALSImplicit` class is used to predict the missing values of an input matrix
+ *  which is implicit data by applying Alternating Least Square to factor the matrix.
+ *  Once the factors are obtained the missing value in the matrix is obtained as the 
+ *  dot product of 'x' and 'y.t', where
+ *  <p>
+ *      x is the user-factors vector (nf * n)
+ *      y is the item-factors vector (nf * m)
+ *      predict (i, j) = x dot y.t
+ *  <p>
+ *------------------------------------------------------------------------------
+ *  @param a  the input data matrix
+ */
 class ALSImplicit(a: MatrixD){
-  //Initialize parameters
+
   var r_lambda = 40 //normalization parameter
   var nf = 10  //dimension of latent vector of each user and item
   val alpha = 150  //confidence level
   val ni = a.dim2 //number of items 
   val nu = a.dim1 //number of users 
 
-  // Initialize Binary Rating Matrix P
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  /**  Initialize Binary Rating Matrix P of the input matrix. For all values that are
+    *  not 0 replace with 1 since those are implicit.
+    *  @param nu  the input matrix's row
+    *  @param ni  the input matrix's column
+    */
+  // 
   def ConP(nu : Int, ni : Int) : MatrixD = {
     val P = a.copy()
 		for (i <- a.range1 ) {
@@ -25,13 +45,26 @@ class ALSImplicit(a: MatrixD){
     P
   }
 
-  // Initialize Confidence Matrix C
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  /**  Initialize Confidence Matrix C to measure our confidence in observing pui. 
+    *  Alpha controls the rate of increase.
+    *  @param a  the input matrix
+    */
+  // 
   def ConC(a: MatrixD) : MatrixD = a * alpha + 1
 
-  //Optimization Function for user and item
-  //X[u] = (yTCuy + lambda*I)^-1yTCuy
-  //Y[i] = (xTCix + lambda*I)^-1xTCix
-  //two formula is the same when it changes X to Y and u to i
+
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  /**  Optimization Function for user. X[u] = (yTCuy + lambda*I)^-1yTCuy
+    *  @param X  the user-factors vector
+    *  @param Y  the item-factors vector
+    *  @param C  the confidence matrix
+    *  @param P  the binary rating matrix
+    *  @param nu  the input matrix's row
+    *  @param nf  dimension of latent vector of each user and item
+    *  @param r_lambda  the normalization parameter
+    */
   def optimize_user(X: MatrixD, Y: MatrixD, C: MatrixD, P: MatrixD, nu:Int, nf:Int, r_lambda:Int)={
     val yT = Y.t
     for (i <- X.range1) {
@@ -47,6 +80,16 @@ class ALSImplicit(a: MatrixD){
     println()
   }
 
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  /**  Optimization Function for item. Y[i] = (xTCix + lambda*I)^-1xTCix
+    *  @param Y  the item-factors vector
+    *  @param X  the user-factors vector
+    *  @param C  the confidence matrix
+    *  @param P  the binary rating matrix
+    *  @param ni  the input matrix's column
+    *  @param nf  dimension of latent vector of each user and item
+    *  @param r_lambda  the normalization parameter
+    */
   def optimize_item(X: MatrixD, Y: MatrixD, C: MatrixD, P: MatrixD, ni:Int, nf:Int, r_lambda:Int) = {
     val xT = X.t
     for (i <- Y.range1) {
@@ -61,6 +104,11 @@ class ALSImplicit(a: MatrixD){
     println()
   }
 
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  /** Train the model to get predict matrix using input dataset.
+    *  @see Collaborative Filtering for Implicit Feedback Datasets
+    *  @see https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4781121
+    */
   def train(): MatrixD = {
     val target = new ALSImplicit(a)
 
@@ -70,19 +118,19 @@ class ALSImplicit(a: MatrixD){
     val p = target.ConP(target.nu,target.ni)
     val c = target.ConC(a)
 
-    val interval = 10
+    val interval = 10 //iterations
 
     for (i <- 0 until interval) {
       println("----------------step "+i+"----------------")
       if (i != 0){
           target.optimize_user(X, Y, c, p, target.nu, target.nf, target.r_lambda)
           target.optimize_item(X, Y, c, p, target.ni, target.nf, target.r_lambda)
-      }
+      } //compute X and Y iteratively
       
       val predict = X * (Y.t)
     }
     
-    var predict = X * (Y.t)
+    var predict = X * (Y.t) //final predict matrix
     println("----------------End----------------")
     
     //normalization
@@ -93,7 +141,11 @@ class ALSImplicit(a: MatrixD){
   }
 }
 
-//under development, because here we need implicit data, so r here needs data like playing hours(ia will be matrix contains 0-1 here)
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/** The `ALSImplicitTest` companion object is used to perform imputation.
+ *  This part is under development, because here we need implicit data, so r here
+ *  needs data like playing hours(ia will be matrix contains 0-1 here)
+ */
 object ALSImplicitTest extends App{
    val r = new MatrixD ((10, 11), 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 0,
                                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
@@ -120,7 +172,7 @@ object ALSImplicitTest extends App{
     println (s"r = $r")
 
     val als = new ALSImplicit(r)
-    val ia = als.train()
+    val ia = als.train()  //generate predict matrix
     println (s"ia = $ia")
     println ("Predicted value for(5, 6) = " + ia(5, 6))
 }

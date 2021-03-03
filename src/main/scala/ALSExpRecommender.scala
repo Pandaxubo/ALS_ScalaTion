@@ -14,9 +14,15 @@ import scala.math.{abs, round, sqrt}
 
 import MatrixD.eye
 
-
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/**  The ALSExpRecommender class is used to perform predictions based on
+  *  Model based Collaborative Filtering techniques (Explicit ALS)
+  *  @param input  original matrix
+  *  @param m      number of rows
+  *  @param n      number of columns
+  */
 class ALSExplicitRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
-    private var predicted  = new MatrixD(m, n)                                // Matrix for storing SVD predicted values
+    private var predicted  = new MatrixD(m, n)                                // Matrix for storing ALS Explicit predicted values
     private val ratings = makeRatings(input, m, n)                              // original ratings matrix
     private var training = new MatrixD(ratings.dim1, ratings.dim2)              // training dataset
     private var copy_training = new MatrixD(ratings.dim1, ratings.dim2)         // copy of training dataset
@@ -27,30 +33,32 @@ class ALSExplicitRecommender (input: MatrixI, m: Int, n: Int) extends Recommende
     //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /** Generate a rating based on Singular value Decompostion of matrix
       *  @param i  user
-      *  @param j item
+      *  @param j  item
       */
     def rate (i: Int, j: Int) : Double = predicted(i, j)
 
 
-      //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    /**  Generates the training matrix for the dataset for Phase 1
-      *  @param train : training data matrix
+    //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**  Generates the training matrix for the dataset for Test 1
+      *  @param train  training data matrix
       */
     def genTrain2 (train: MatrixI)
     {
         for (i <- train.range1) training(train(i, 0), train(i, 1)) = train(i, 2)
         copy_training = training.copy()
-    } // genTrain2
+    } 
 
-
+    //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**  Run the ALSExplicit algorithm and get the predict matrix.
+      */
     def ALSExp{
         predicted = als.train()
     }
 
-        //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    /**  Generates the training matrix for the dataset for Phase 2
-      *  @param exl : vector of index values which will be excluded in the train
-      *  @param input : original data matrix
+    //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    /**  Generates the training matrix for the dataset for Test 2
+      *  @param exl  vector of index values which will be excluded in the train
+      *  @param input  original data matrix
       */
     def genTrainTest (exl: VectorI, input: MatrixI): MatrixD =
     {
@@ -60,14 +68,14 @@ class ALSExplicitRecommender (input: MatrixI, m: Int, n: Int) extends Recommende
         }// for
         copy_training = training.copy()
         ratings - training
-    } //zRatings
+    } 
            
            
     //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**  Returns a matrix with replacing all values with 0 beyond the interval specified
-      *  corresponds to Phase 3 of the expermiments
-      *  @param limit : interval start point
-      *  @param input : original data matrix
+      *  corresponds to Test 3 of the expermiments
+      *  @param limit  interval start point
+      *  @param input  original data matrix
       */
     def zRatings (limit : Int, input: MatrixI)
     {
@@ -80,8 +88,11 @@ class ALSExplicitRecommender (input: MatrixI, m: Int, n: Int) extends Recommende
 
 }
 
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/** The `ALSExpRecommenderTest` object is used to test the `Recommender` Trait using the MovieLens dataset.
+  *  > runMain ALSExpRecommenderTest
+  */
 object ALSExpRecommenderTest extends App{
-
     
     val BASE_DIR = System.getProperty("user.dir")
     val data_file =  BASE_DIR + "/data/sorted_data.txt"
@@ -121,6 +132,11 @@ object ALSExpRecommenderTest extends App{
     } // for
 }
 
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/** The `ALSExpRecommenderTest2` object is used to test the `Recommender` Trait using the MovieLens dataset.
+  * Uses K-fold validation and adds HIT value, which means the predict value is the same as original value.
+  *  > runMain ALSExpRecommenderTest2
+  */
 object ALSExpRecommenderTest2 extends App
 {
     val BASE_DIR = System.getProperty("user.dir")
@@ -181,7 +197,11 @@ object ALSExpRecommenderTest2 extends App
 } 
 
 
-
+//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+/** The `ALSImpRecommenderTest3` object is used to test the `Recommender` Trait using the MovieLens dataset.
+  * Uses cross validation.
+  *  > runMain ALSImpRecommenderTest3
+  */
 object ALSExpRecommenderTest3 extends App
 {
     val BASE_DIR = System.getProperty("user.dir")
