@@ -136,7 +136,14 @@ class ALSImplicit(a: MatrixD){
     //normalization
     predict = (predict + abs(predict.min(predict.range1,predict.range2)))
     predict = predict*(1/predict.max(predict.range1,predict.range2))
-    
+
+    for(i<- predict.range1)
+      for(j<- predict.range2)
+        if(predict(i, j) >= 0.5)
+          predict(i, j) = 1.0
+        else if(predict(i, j) < 0.5)
+          predict(i,j) = 0.0
+
     predict 
   }
 }
