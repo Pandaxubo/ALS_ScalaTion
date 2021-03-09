@@ -95,17 +95,19 @@ class ALSExplicitRecommender (input: MatrixI, m: Int, n: Int) extends Recommende
 object ALSExpRecommenderTest extends App{
     
     val BASE_DIR = System.getProperty("user.dir")
-    val data_file =  BASE_DIR + "/data/sorted_data.txt"
+    //val data_file =  BASE_DIR + "/data/sorted_data.txt"
+    val data_file =  BASE_DIR + "/data/rating.txt"
     MatrixI.setSp('\t')
     var input   =  MatrixI(data_file)
     input.setCol(0, input.col(0)-1)
     input.setCol(1, input.col(1)-1)
-    val (m, n)   = (943, 1682)
+    //val (m, n)   = (943, 1682)
+    val (m, n)   = (6040, 3952)
     val rec    = new ALSExplicitRecommender(input, m, n)
     val rating = rec.makeRatings(input, m, n)
 
-    val train_file =  BASE_DIR + "/data/u2.base"           // replace u(1-5).base
-    val test_file  =  BASE_DIR + "/data/u2.test"           // replace u(1-5).test
+    val train_file =  BASE_DIR + "/data/u2Data.train"           // replace u(1-5).base
+    val test_file  =  BASE_DIR + "/data/u2Data.test"           // replace u(1-5).test
 
     var train   =  MatrixI(train_file)
     train.setCol(0, train.col(0)-1)
@@ -140,7 +142,8 @@ object ALSExpRecommenderTest extends App{
 object ALSExpRecommenderTest2 extends App
 {
     val BASE_DIR = System.getProperty("user.dir")
-    val data_file   =  BASE_DIR + "/data/sorted_data.txt"
+    val data_file =  BASE_DIR + "/data/rating.txt"
+    //val data_file   =  BASE_DIR + "/data/sorted_data.txt"
     val kfold       = 5                                                              // value for k-fold cross-validation
     val diff        = new VectorD(kfold)                                             // mae values
     val rdiff       = new VectorD(kfold)                                             // rounded mae values
