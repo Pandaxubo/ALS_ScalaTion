@@ -176,3 +176,14 @@
 1615261863152:runMain ALSExpRecommenderTest
 1615262359096:run last Compile
 1615262379445:run bgRun
+1615262500839:runMain ALSExpRecommenderTest
+1615262839912:runMain ALSExpRecommenderTest2
+1615262849018:runMain ALSExpRecommenderTest
+1615263442136:D:/anaconda/python.exe e:/7200/ALS_ScalaTion/src/main/python/split_data.py
+1615263682877:runMain ALSExpRecommenderTest
+1615263908459:clean
+1615263912350:cat .jvmopts
+1615263912436:-Xms1536m
+1615263912504:-Xmx1536m
+1615263929147:cat .jvmopts
+1615264114036:runMain ALSExpRecommenderTest

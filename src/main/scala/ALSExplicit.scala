@@ -21,8 +21,8 @@ import MatrixD.eye
  */
 class ALSExplicit(a: MatrixD){
 
-  var r_lambda = 1 //normalization parameter
-  var nf = 10  //dimension of latent vector of each user and item
+  var r_lambda = 40 //normalization parameter
+  var nf = 100  //dimension of latent vector of each user and item
   val ni = a.dim2 //number of items 
   val nu = a.dim1 //number of users 
 

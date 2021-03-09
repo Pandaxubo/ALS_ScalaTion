@@ -103,22 +103,23 @@ object ALSExpRecommenderTest extends App{
     input.setCol(1, input.col(1)-1)
     //val (m, n)   = (943, 1682)
     val (m, n)   = (6040, 3952)
+    println("Finished reading m and n.")
     val rec    = new ALSExplicitRecommender(input, m, n)
     val rating = rec.makeRatings(input, m, n)
 
     val train_file =  BASE_DIR + "/data/u2Data.train"           // replace u(1-5).base
     val test_file  =  BASE_DIR + "/data/u2Data.test"           // replace u(1-5).test
-
+    println("Imported training and testing set.")
     var train   =  MatrixI(train_file)
     train.setCol(0, train.col(0)-1)
     train.setCol(1, train.col(1)-1)
-
+    println("Generating training set.")
     var tester   =  MatrixI(test_file)
     tester.setCol(0, tester.col(0)-1)
     tester.setCol(1, tester.col(1)-1)
-
+    println("Generating testing set.")
     rec.genTrain2(train)
-
+    println("Finishing data preprocessing.")
 
     for(i <- 0 until 1) {
         val t = time{
