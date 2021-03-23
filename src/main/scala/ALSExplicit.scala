@@ -3,6 +3,7 @@ import scalation.linalgebra.MatrixI
 import scalation.random.RandomMatD
 import scala.util.Random
 import scala.math.abs
+import scala.io.Source.fromFile
 
 import MatrixD.eye
 
@@ -21,8 +22,8 @@ import MatrixD.eye
  */
 class ALSExplicit(a: MatrixD){
 
-  var r_lambda = 40 //normalization parameter
-  var nf = 100  //dimension of latent vector of each user and item
+  var r_lambda = 0.065 //normalization parameter
+  var nf = 8  //dimension of latent vector of each user and item
   val ni = a.dim2 //number of items 
   val nu = a.dim1 //number of users 
 
@@ -82,10 +83,16 @@ class ALSExplicit(a: MatrixD){
     */
   def train(): MatrixD = {
     val target = new ALSExplicit(a)
-
-    var X = RandomMatD (target.nu, target.nf, 5, 1, 1, 0).gen* 0.00001
-    var Y = RandomMatD (target.ni, target.nf, 5, 1, 1, 0).gen* 0.00001
-
+    val BASE_DIR = System.getProperty("user.dir")
+    val www =  BASE_DIR + "/data/a.txt"
+    a.write(www)
+    var X = RandomMatD (target.nu, target.nf, 5, 1, 1, 0).gen
+    var Y = RandomMatD (target.ni, target.nf, 5, 1, 1, 0).gen
+    
+    //var X = RandomMatD (target.nu, target.nf, 5, 1, 1, 0).gen* 0.00001
+    //var Y = RandomMatD (target.ni, target.nf, 5, 1, 1, 0).gen* 0.00001
+    //print("X = " + X)
+    //print("Y = " + Y)
     val interval = 10 //iterations
 
     for (i <- 0 until interval) {
@@ -100,10 +107,10 @@ class ALSExplicit(a: MatrixD){
     }
 
 
-    val BASE_DIR = System.getProperty("user.dir")
-    val test_file =  BASE_DIR + "/data/u2.test"
+    //val BASE_DIR = System.getProperty("user.dir")
+    val test_file =  BASE_DIR + "/data/u2Data.test"
     val ave = getAverage(test_file)
-    var predict = X * (Y.t)  + ave -1
+    var predict = X * (Y.t) + ave -1
 
     println("----------------End----------------")
     predict 
@@ -133,6 +140,7 @@ object ALSExplicitTest extends App{
     val ia = als.train()  //generate predict matrix
     println (s"ia = $ia")
     println ("Predicted value for(5, 6) = " + ia(5, 6))
+
 }
 
 

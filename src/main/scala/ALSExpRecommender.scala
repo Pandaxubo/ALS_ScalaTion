@@ -158,7 +158,8 @@ object ALSExpRecommenderTest2 extends App
     input.setCol(1, input.col(1) -1)
 
     val foldsize    = input.dim1/kfold
-    val (m, n)   = (943, 1682)
+    //val (m, n)   = (943, 1682)
+    val (m, n)   = (6040, 3952)
     val rec = new  ALSExplicitRecommender(input, m, n)
     for(x <- 0 until 1) {
         val t = time {

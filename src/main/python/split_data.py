@@ -19,10 +19,10 @@ df[0] = pd.to_numeric(df[0])
 df[1] = pd.to_numeric(df[1])
 df[2] = pd.to_numeric(df[2])
 print(df.dtypes)
-train, test = train_test_split(df, test_size=0.9)
+train, test = train_test_split(df, test_size=0.75)
 print(test)
 print(train.shape)
-
+print(df[1].unique().shape[0])
 ### output data
 df.to_csv('Data/rating.base', header=False, index=False, sep='\t', mode='a')
 train.to_csv('Data/u2Data.train', header=False, index=False, sep='\t', mode='a')
