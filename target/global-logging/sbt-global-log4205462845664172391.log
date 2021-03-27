@@ -1,3 +1,0 @@
-[0m[[0m[0mdebug[0m] [0m[0m> Exec(runMain MDTest, Some(a9815ad3-32a0-4cc5-b19c-8f6c914a8e29), Some(CommandSource(console0)))[0m
-[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Compile / runMain[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: bloop.integrations.sbt.Offloader$$anon$1@212e39ee, check cycles: false, forcegc: true[0m

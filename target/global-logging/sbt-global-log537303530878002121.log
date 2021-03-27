@@ -1,5 +1,0 @@
-[0m[[0m[0mdebug[0m] [0m[0m> Exec(runMain MDTest, Some(24555076-a5c4-41e9-b27c-718f22894f05), Some(CommandSource(console0)))[0m
-[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Compile / runMain[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: bloop.integrations.sbt.Offloader$$anon$1@2dde0a34, check cycles: false, forcegc: true[0m
-[0m[[0m[0minfo[0m] [0m[0mcompiling 1 Scala source to /Users/pandaxubo/Desktop/Spring_2021/Master_Project_7200/alstest/target/scala-2.12/classes ...[0m
-[0m[[0m[0minfo[0m] [0m[0mshutting down sbt server[0m

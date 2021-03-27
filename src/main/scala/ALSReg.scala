@@ -28,8 +28,8 @@ class ALSReg(a: MatrixD){
   var nf = 20  //dimension of latent vector of each user and item
   val ni = a.dim2 //number of items 
   val nu = a.dim1 //number of users 
-  var n_epochs = 15   //Number of epochs
-  var E = eye(nf) //(nf x nf)-dimensional idendity matrix
+  var n_epochs = 11   //Number of epochs
+  var E = eye(nf) //(nf x nf)-dimensional identity matrix
 
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   /**  Optimization Function for user. 
@@ -43,36 +43,33 @@ class ALSReg(a: MatrixD){
     for (i <- X.range2) {
       print(s"\r user: ${i+1} / "+ X.dim2)
 
-      var nui = 0
+      var nui = I(i).countPos
       var Ii_nonzero = new VectorD(1)
-      for(j <- 0 to I.dim2 - 1){
+      for(j <- I.range2){
           if(I(i)(j) != 0){
               if (j == 0){
                 Ii_nonzero(0) = j
-                nui += 1
               }
               else{
-                nui += 1
                 Ii_nonzero = Ii_nonzero ++ j
               }
           }
       }
-      //println(Ii_nonzero)
       
       if(nui == 0)  nui = 1
 
-      var Y_Ii = new MatrixD(Y.dim1, Ii_nonzero.size)
-      for(j <- Y.range1; k <- 0 until Ii_nonzero.size){//; value <- Ii_nonzero){
-        Y_Ii(j)(k) =  Y(j)(:Ii_nonzero)
+      var Y_Ii = new MatrixD(Y.dim1, nui)
+      for(k <- 0 until nui){
+        Y_Ii.setCol(k, Y.col(Ii_nonzero(k).toInt))
       }
 
-      var a_Ii = new MatrixD(Ii_nonzero.size, 1)
-      for(j <- 0 until Ii_nonzero.size; value <- Ii_nonzero){  
-        a_Ii(j)(0) =  a(i)(value.toInt)
+      var a_Ii = new MatrixD(1, nui)
+      for(j <- 0 until nui){
+        a_Ii(0,j) =  a(i)(Ii_nonzero(j).toInt)
       }
 
-      var Ai = Y_Ii * Y_Ii.t + E * r_lambda * nui
-      var Vi = (Y_Ii * a_Ii).col(0)
+      var Ai = (Y_Ii.t).mdot(Y_Ii.t) + E * r_lambda * nui
+      var Vi = ((Y_Ii.t).mdot(a_Ii.t)).col(0)
 
       X.setCol(i, (Ai).solve(Vi))
 
@@ -92,39 +89,47 @@ class ALSReg(a: MatrixD){
     for (j <- Y.range2) {
       print(s"\r item: ${j+1} / "+ Y.dim2)
 
-      var nmj = 0
+      var nmj = I(j).countPos
       var Ij_nonzero = new VectorD(1)
       for(i <- I.range2){
           if(I(j)(i) != 0){
-            if (j == 0){
+            if (i == 0){
               Ij_nonzero(0) = i
-              nmj += 1
               }
             else{
-              nmj += 1
               Ij_nonzero = Ij_nonzero ++ i
             }
           }
       }
       if(nmj == 0)  nmj = 1
 
-      var X_Ij = new MatrixD(X.dim1, Ij_nonzero.size)
-      for(i <- X.range1; k <- 0 until Ij_nonzero.size; value <- Ij_nonzero){
-        X_Ij(i)(k) =  X(i)(value.toInt)
+      var X_Ij = new MatrixD(X.dim1, nmj)
+      for(k <- 0 until nmj){
+        X_Ij.setCol(k, X.col(Ij_nonzero(k).toInt))
       }
 
-      var a_Ij = new MatrixD(Ij_nonzero.size, 1)
-      for(i <- 0 until Ij_nonzero.size; value <- Ij_nonzero){        
-        a_Ij(i)(0) =  a(j)(value.toInt)
+      var a_Ij = new MatrixD(nmj, 1)
+      for(i <- 0 until nmj){
+        a_Ij(i,0) =  a(Ij_nonzero(i).toInt)(j)
       }
 
-      var Aj = X_Ij * X_Ij.t + E * r_lambda * nmj
-      var Vj = (X_Ij * a_Ij).col(0)
+        var Aj = (X_Ij.t).mdot(X_Ij.t) + E * r_lambda * nmj
+        var Vj = ((X_Ij.t).mdot(a_Ij)).col(0)
       
       Y.setCol(j, (Aj).solve(Vj))
     }
     println()
   }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  /**  Get the average value of the input dataset for normalization
+    *  @param file_name  the input dataset's path
+    */
+  def getAverage(file_name: String): Double = {
+    val tar = MatrixI(file_name)
+    tar.col(2).sum / tar.dim1.toDouble
+  }
+
 
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   /** Train the model to get predict matrix using input dataset.
@@ -133,29 +138,30 @@ class ALSReg(a: MatrixD){
     */
   def train(I: MatrixD, I2: MatrixD): MatrixD = {
     val target = new ALSReg(a)
-    println(I.dim1+","+I.dim2)
+    println("Start algorithm.")
+    println("User: "+I.dim1+","+"Item: "+I.dim2)
     var X = RandomMatD (target.nf, target.nu, 1, 0, 1, 0).gen * 3
     var Y = RandomMatD (target.nf, target.ni, 1, 0, 1, 0).gen * 3
 
-    var Y_vector: VectorD = Y(0)
-    for(i <- 1 until Y.dim1){
-        Y_vector ++ Y(i)
+    var Y_vector: VectorD = a(0)
+    for(i <- 1 until a.dim1){
+        Y_vector = Y_vector ++ a(i)
     }
-    var avgRating = Y_vector.sum/(Y_vector.size - Y_vector.countZero)
+
+    var avgRating = Y_vector.sum/(Y_vector.countPos)
     for(i <- Y.range2){
-      Y(0)(i) = avgRating
+      Y(0, i) = avgRating
     }
 
 
     for (i <- 0 until n_epochs) {
       println("----------------step "+i+"----------------")
       if (i != 0){
-          target.optimize_user(X, Y, target.r_lambda, target.E, I) // may not always be I
-          target.optimize_item(X, Y, target.r_lambda, target.E, I)
+          target.optimize_user(X, Y, target.r_lambda, target.E, I)
+          target.optimize_item(X, Y, target.r_lambda, target.E, I.t)
       }//compute X and Y iteratively
     }
-
-    var predict = (X.t) * Y
+    var predict = (X).mdot(Y)
 
     println("----------------End----------------")
     predict

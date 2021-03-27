@@ -26,7 +26,7 @@ class ALSRegRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
     private val ratings = makeRatings(input, m, n)                              // original ratings matrix
     private var training = new MatrixD(ratings.dim1, ratings.dim2)              // training dataset
     private var copy_training = new MatrixD(ratings.dim1, ratings.dim2)         // copy of training dataset
-    private var testing = new MatrixD(ratings.dim1, ratings.dim2) 
+    private var testing = new MatrixD(ratings.dim1, ratings.dim2)
     private var copy_testing = new MatrixI(ratings.dim1, ratings.dim2)
     private var copy_train = new MatrixI(ratings.dim1, ratings.dim2)
     private val als = new ALSReg(training)
@@ -47,14 +47,17 @@ class ALSRegRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
       */
     def genTrain2 (train: MatrixI): MatrixI =
     {
-        for (i <- train.range1) training(train(i, 0), train(i, 1)) = train(i, 2)
+        for (i <- train.range1){
+            training(train(i, 0), train(i, 1)) = train(i, 2)
+        }
         copy_train = training.copy().toInt
         copy_train
     }
-
     def genTest2 (train: MatrixI): MatrixI =
     {
-        for (i <- train.range1) testing(train(i, 0), train(i, 1)) = train(i, 2)
+        for (i <- train.range1) {
+            testing(train(i, 0), train(i, 1)) = train(i, 2)
+        }
         copy_testing = testing.copy().toInt
         copy_testing
     } 
@@ -103,7 +106,6 @@ class ALSRegRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
     def getNonZero(testing: MatrixI): Double = {
         var T_vector = VectorD(0.0)
         for(i <- testing.range1){
-            // var a = new VectorD(testing.selectRows(Array(i)).toDouble(0))
             T_vector = T_vector ++ testing.selectRows(Array(i)).toDouble(0)
         }
         println(T_vector.countPos)
@@ -120,20 +122,21 @@ class ALSRegRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
         *  @param input  input matrix(training or testing data)
         */
     def ConI(input: MatrixI) : MatrixD = {
-        val I = input.copy().toDouble
-        for (i <- input.range1; j <- input.range2) {
-            if(I(i)(j) > 0)  
-                I(i)(j) = 1.0
+        var it = input.copy().toDouble
+        for (i <- it.range1; j <- it.range2) {
+            if(input(i)(j) != 0.0){
+                it(i,j) = 1.0
                 
+            }
         }
-        I
+        it
     }
 
     def rmse(testing: MatrixI, I2: MatrixD, predict: MatrixD): Double = {
-        var tar = ((I2 ** (testing.toDouble - predict))**(I2 ** (testing.toDouble - predict))).sum
+        var tar = (((I2 ** testing.toDouble - I2 ** predict) ** (I2 ** testing.toDouble - I2 ** predict))).sum
         println(tar)
-        var res = sqrt(tar / getNonZero(testing))
-        println(res)
+        var res = sqrt(tar / getNonZero(testing).toDouble)
+        
         res
     }
 
@@ -168,22 +171,23 @@ object ALSRegRecommenderTest extends App{
     tester.setCol(1, tester.col(1)-1)
     println("Generating testing set.")
     val train_d = rec.genTrain2(train)
-    val testing = rec.genTest2(tester)
-    println("Finishing data preprocessing.")
-
     val I = rec.ConI(train_d)
+    println("I finished")
+    val testing = rec.genTest2(tester)
     val I2 = rec.ConI(testing)
-
+    println("I2 finished")
+    println("Finishing data preprocessing.")
+    
     var predict = new MatrixD(m, n)
     for(i <- 0 until 1) {
         val t = time{
             println("Training Time")
             val t1 = time {                                         // training time
-                predict = rec.ALSReg(I, I2)                                      
+                predict = rec.ALSReg(I, I2)
             } //time
             println("Prediction Time")                              // testing time
             val t2 = time {
-                print("RMSE = " + rec.rmse(testing, I2, predict))
+                println("RMSE = " + rec.rmse(testing, I2, predict))
             } // time
         } //time
     } // for
