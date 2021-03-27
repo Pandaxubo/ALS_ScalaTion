@@ -2,6 +2,9 @@ import scalation.linalgebra.MatrixD
 import scalation.linalgebra.VectorD
 import scalation.linalgebra.MatrixI
 import scalation.random.RandomMatD
+import scala.util.Random
+import scala.math.abs
+import scala.io.Source.fromFile
 
 import MatrixD.eye
 
@@ -9,7 +12,7 @@ import MatrixD.eye
 /** The `ALSReg` class is used to predict the missing values of an input matrix
  *  by applying Alternating Least Square to factor the matrix. Compare to ALS Explicit
  *  method(ALSFast), it will be more accurate but slower.
- *  Once the factors are obtained the missing value in the matrix is obtained as the 
+ *  Once the factors are obtained the missing value in the matrix is obtained as the
  *  dot product of 'x.t' and 'y', where
  *  <p>
  *      x is the user-factors vector (nf * nu)
@@ -23,17 +26,17 @@ class ALSReg(a: MatrixD){
 
   var r_lambda = 0.1 //normalization parameter
   var nf = 20  //dimension of latent vector of each user and item
-  val ni = a.dim2 //number of items 
-  val nu = a.dim1 //number of users 
+  val ni = a.dim2 //number of items
+  val nu = a.dim1 //number of users
   var n_epochs = 16   //Number of epochs
   var E = eye(nf) //(nf x nf)-dimensional identity matrix
 
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  /**  Optimization Function for user. 
+  /**  Optimization Function for user.
     *  @param X  the user-factors vector
     *  @param Y  the item-factors vector
     *  @param E  the compressed matrix(nf * nf)
-    *  @param I  "selector" matrix I 
+    *  @param I  "selector" matrix I
     *  @param r_lambda  the normalization parameter
     */
   def optimize_user(X: MatrixD, Y: MatrixD, r_lambda:Double, E: MatrixD, I: MatrixD)={
@@ -78,7 +81,7 @@ class ALSReg(a: MatrixD){
     *  @param X  the user-factors vector
     *  @param Y  the item-factors vector
     *  @param E  the compressed matrix(nf * nf)
-    *  @param I  "selector" matrix I 
+    *  @param I  "selector" matrix I
     *  @param r_lambda  the normalization parameter
     */
   def optimize_item(X: MatrixD, Y: MatrixD, r_lambda:Double, E: MatrixD, I: MatrixD) = {
@@ -111,7 +114,7 @@ class ALSReg(a: MatrixD){
 
       var Aj = (X_Ij.t).mdot(X_Ij.t) + E * r_lambda * nmj
       var Vj = ((X_Ij.t).mdot(a_Ij)).col(0)
-      
+
       Y.setCol(j, (Aj).solve(Vj))
     }
     println()
@@ -130,7 +133,7 @@ class ALSReg(a: MatrixD){
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   /** Train the model to get predict matrix using input dataset.
     *  @see Large-scale Parallel Collaborative Filtering for the Netflix Prize(Section 3.1)
-    *  @see http://shiftleft.com/mirrors/www.hpl.hp.com/personal/Robert_Schreiber/papers/2008%20AAIM%20Netflix/netflix_aaim08(submitted).pdf 
+    *  @see http://shiftleft.com/mirrors/www.hpl.hp.com/personal/Robert_Schreiber/papers/2008%20AAIM%20Netflix/netflix_aaim08(submitted).pdf
     */
   def train(I: MatrixD, I2: MatrixD): MatrixD = {
     val target = new ALSReg(a)

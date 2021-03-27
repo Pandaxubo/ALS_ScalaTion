@@ -3,7 +3,7 @@ import scalation.linalgebra.MatrixI
 import scalation.random.RandomMatD
 import scala.util.Random
 import scala.math.abs
-import scala.io.Source.fromFile
+import scalation.math.double_exp
 
 import MatrixD.eye
 
@@ -22,8 +22,8 @@ import MatrixD.eye
  */
 class ALSExplicit(a: MatrixD){
 
-  var r_lambda = 0.065 //normalization parameter
-  var nf = 8  //dimension of latent vector of each user and item
+  var r_lambda = 150 //normalization parameter
+  var nf = 10  //dimension of latent vector of each user and item
   val ni = a.dim2 //number of items 
   val nu = a.dim1 //number of users 
 
@@ -77,22 +77,48 @@ class ALSExplicit(a: MatrixD){
   }
 
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  /** Create a row normalized version of 'this' matrix. All values are equals to
+    *  row mean of a for bias calculation.(mean calculation doesnot include 0s)
+    */
+  def normalize_u (): MatrixD =
+  {
+    var norm_u= new MatrixD (a.dim1, a.dim2)
+    for (i <- a.range1) {
+      val a_i_nz = a(i).filter (_ !=~ 0.0)
+      for(j <- a.range2) {
+        norm_u(i, j) = a_i_nz.mean
+      }
+    } // for
+    norm_u
+  } // normalize
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  /** Create a row normalized version of 'this' matrix. All values are equals to
+    *  row mean of a for bias calculation.(mean calculation doesnot include 0s)
+    */
+  def normalize_i (): MatrixD =
+  {
+    var norm_i= new MatrixD (a.dim1, a.dim2)
+    for (j <- a.range2) {
+      val a_j_nz = a.col(j).filter (_ !=~ 0.0)
+      for(i <- a.range1) {
+        norm_i(i, j) = a_j_nz.mean
+      }
+    } // for
+    norm_i
+  } // normalize
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   /** Train the model to get predict matrix using input dataset.
     *  @see Matrix Completion via Alternating Least Square(ALS)
     *  @see http://stanford.edu/~rezab/classes/cme323/S15/notes/lec14.pdf 
     */
   def train(): MatrixD = {
     val target = new ALSExplicit(a)
-    val BASE_DIR = System.getProperty("user.dir")
-    val www =  BASE_DIR + "/data/a.txt"
-    a.write(www)
-    var X = RandomMatD (target.nu, target.nf, 5, 1, 1, 0).gen
-    var Y = RandomMatD (target.ni, target.nf, 5, 1, 1, 0).gen
-    
-    //var X = RandomMatD (target.nu, target.nf, 5, 1, 1, 0).gen* 0.00001
-    //var Y = RandomMatD (target.ni, target.nf, 5, 1, 1, 0).gen* 0.00001
-    //print("X = " + X)
-    //print("Y = " + Y)
+
+    var X = RandomMatD (target.nu, target.nf, 5, 1, 1, 0).gen//* 0.00001
+    var Y = RandomMatD (target.ni, target.nf, 5, 1, 1, 0).gen//* 0.00001
+
     val interval = 10 //iterations
 
     for (i <- 0 until interval) {
@@ -106,13 +132,28 @@ class ALSExplicit(a: MatrixD){
 
     }
 
+    val BASE_DIR = System.getProperty("user.dir")
+    //val test_file =  BASE_DIR + "/data/steam_games/training.csv"
+    //val ave = getAverage(test_file)
 
-    //val BASE_DIR = System.getProperty("user.dir")
-    val test_file =  BASE_DIR + "/data/u2Data.test"
-    val ave = getAverage(test_file)
-    var predict = X * (Y.t) + ave -1
+    val u_mat = normalize_u()
+//    val i_mat = normalize_i()
+//    var norm = u_mat - i_mat
+//    for(i <- norm.range1; j <- norm.range2){
+//      norm(i, j) = abs(norm(i, j))
+//    }
+
+    var predict = X * (Y.t)+ u_mat - 0.8
+
+    for(i <- predict.range1)
+      for(j <- predict.range2)
+        if(predict(i,j) > 5.0 )
+          predict(i,j) = 5.0
+        else if(predict(i,j) < 1.0)
+          predict(i,j) = 1.0
 
     println("----------------End----------------")
+    //predict.write(BASE_DIR + "/data/steam_games/result.csv")
     predict 
   }
 }
@@ -140,7 +181,6 @@ object ALSExplicitTest extends App{
     val ia = als.train()  //generate predict matrix
     println (s"ia = $ia")
     println ("Predicted value for(5, 6) = " + ia(5, 6))
-
 }
 
 

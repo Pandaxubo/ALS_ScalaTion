@@ -1,9 +1,18 @@
+
+import scalation.random.RandomMatD
+import scalation.random.VariateMat
 import scalation.linalgebra.MatrixD
+import scalation.linalgebra.Eigenvalue
+import scalation.linalgebra.Eigenvector
 import scalation.linalgebra._
+import scalation.linalgebra.Fac_LU
+import scala.util.Random
 import scalation.linalgebra.VectorD
 import scalation.analytics.recommender._
 import scalation.util._
-import scala.math.sqrt
+import scala.math.{abs, round, sqrt}
+
+import MatrixD.eye
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 /**  The ALSRegRecommender class is used to perform predictions based on
@@ -16,12 +25,12 @@ class ALSRegRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
     private var predicted  = new MatrixD(m, n)                                // Matrix for storing Regularized ALS predicted values
     private val ratings = makeRatings(input, m, n)                              // original ratings matrix
     private var training = new MatrixD(ratings.dim1, ratings.dim2)              // training dataset
-    private var copy_training = new MatrixD(ratings.dim1, ratings.dim2)         // copy of training dataset(For phase 2)
-    private var testing = new MatrixD(ratings.dim1, ratings.dim2)   // testing dataset
-    private var copy_testing = new MatrixI(ratings.dim1, ratings.dim2)  // copy of testing dataset(For phase 1)
-    private var copy_train = new MatrixI(ratings.dim1, ratings.dim2)    // copy of training dataset(For phase 1)
+    private var copy_training = new MatrixD(ratings.dim1, ratings.dim2)         // copy of training dataset
+    private var testing = new MatrixD(ratings.dim1, ratings.dim2)
+    private var copy_testing = new MatrixI(ratings.dim1, ratings.dim2)
+    private var copy_train = new MatrixI(ratings.dim1, ratings.dim2)
     private val als = new ALSReg(training)
-    
+
 
 
     //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -44,19 +53,14 @@ class ALSRegRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
         copy_train = training.copy().toInt
         copy_train
     }
-
-    //:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    /**  Generates the testing matrix for the dataset for Test 1
-      *  @param test  testing data matrix
-      */
-    def genTest2 (test: MatrixI): MatrixI =
+    def genTest2 (train: MatrixI): MatrixI =
     {
-        for (i <- test.range1) {
-            testing(test(i, 0), test(i, 1)) = test(i, 2)
+        for (i <- train.range1) {
+            testing(train(i, 0), train(i, 1)) = train(i, 2)
         }
         copy_testing = testing.copy().toInt
         copy_testing
-    } 
+    }
 
     //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**  Run the ALSExplicit algorithm and get the predict matrix.
@@ -79,9 +83,9 @@ class ALSRegRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
         }// for
         copy_training = training.copy()
         ratings - training
-    } 
-           
-           
+    }
+
+
     //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
     /**  Returns a matrix with replacing all values with 0 beyond the interval specified
       *  corresponds to Test 3 of the expermiments
@@ -122,23 +126,17 @@ class ALSRegRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
         for (i <- it.range1; j <- it.range2) {
             if(input(i)(j) != 0.0){
                 it(i,j) = 1.0
-                
+
             }
         }
         it
     }
 
-    //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-    /**  Calculate RMSE value of the model(for test dataset).
-      *  ( ((I2 * (testing - predict))^2) / testing[testing>0] )^(1/2)
-      *  @param testing  testing data matrix
-      *  @param I2 binary matrix for testing dataset
-      *  @param predict predict matrix(From ALS-WR)
-      */
     def rmse(testing: MatrixI, I2: MatrixD, predict: MatrixD): Double = {
         var tar = (((I2 ** testing.toDouble - I2 ** predict) ** (I2 ** testing.toDouble - I2 ** predict))).sum
         println(tar)
         var res = sqrt(tar / getNonZero(testing).toDouble)
+
         res
     }
 
@@ -149,7 +147,7 @@ class ALSRegRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
   *  > runMain ALSRegRecommenderTest
   */
 object ALSRegRecommenderTest extends App{
-    
+
     val BASE_DIR = System.getProperty("user.dir")
     val data_file =  BASE_DIR + "/data/rating.txt"
     MatrixI.setSp('\t')
@@ -179,7 +177,7 @@ object ALSRegRecommenderTest extends App{
     val I2 = rec.ConI(testing)
     println("I2 finished")
     println("Finishing data preprocessing.")
-    
+
     var predict = new MatrixD(m, n)
     for(i <- 0 until 1) {
         val t = time{
