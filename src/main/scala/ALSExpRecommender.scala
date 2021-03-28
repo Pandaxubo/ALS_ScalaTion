@@ -109,8 +109,11 @@ object ALSExpRecommenderTest extends App{
     val rec    = new ALSExplicitRecommender(input, m, n)
     val rating = rec.makeRatings(input, m, n)
 
+    //val train_file =  BASE_DIR + "/data/u2.base"           // replace u(1-5).base
+    //val test_file  =  BASE_DIR + "/data/u2.test"
+
     val train_file =  BASE_DIR + "/data/u2Data.train"           // replace u(1-5).base
-    val test_file  =  BASE_DIR + "/data/u2Data.test"  
+    val test_file  =  BASE_DIR + "/data/u2Data.test"
     //val train_file =  BASE_DIR + "/data/steam_games/training.csv"           // replace u(1-5).base
     //val test_file  =  BASE_DIR + "/data/steam_games/testing.csv"           // replace u(1-5).test
     println("Imported training and testing set.")

@@ -119,7 +119,7 @@ class ALSExplicit(a: MatrixD){
     var X = RandomMatD (target.nu, target.nf, 5, 1, 1, 0).gen//* 0.00001
     var Y = RandomMatD (target.ni, target.nf, 5, 1, 1, 0).gen//* 0.00001
 
-    val interval = 10 //iterations
+    val interval = 16 //iterations
 
     for (i <- 0 until interval) {
       println("----------------step "+i+"----------------")

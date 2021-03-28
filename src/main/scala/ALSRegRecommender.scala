@@ -151,26 +151,40 @@ class ALSRegRecommender (input: MatrixI, m: Int, n: Int) extends Recommender{
 object ALSRegRecommenderTest extends App{
     
     val BASE_DIR = System.getProperty("user.dir")
-    val data_file =  BASE_DIR + "/data/rating.txt"
+    //val data_file =  BASE_DIR + "/data/rating.txt"    //1m
+    //val data_file =  BASE_DIR + "/data/sorted_data.txt"   //100k
+    val data_file =  BASE_DIR + "/data/steam_games/target.csv"  //steam
     MatrixI.setSp('\t')
     var input   =  MatrixI(data_file)
-    input.setCol(0, input.col(0)-1)
-    input.setCol(1, input.col(1)-1)
-    val (m, n)   = (6040, 3952)
+//    input.setCol(0, input.col(0)-1)
+//    input.setCol(1, input.col(1)-1)   //movielens
+    input.setCol(0, input.col(0))
+    input.setCol(1, input.col(1)) //steam
+    //val (m, n)   = (6040, 3952)
+    //val (m, n)   = (943, 1682)
+    val(m, n) = (11345, 3582)
     println("Finished reading m and n.")
     val rec    = new ALSRegRecommender(input, m, n)
     val rating = rec.makeRatings(input, m, n)
 
-    val train_file =  BASE_DIR + "/data/u2Data.train"           // replace u(1-5).base
-    val test_file  =  BASE_DIR + "/data/u2Data.test"           // replace u(1-5).test
+//    val train_file =  BASE_DIR + "/data/u2Data.train"           // 1m
+//    val test_file  =  BASE_DIR + "/data/u2Data.test"
+    //val train_file =  BASE_DIR + "/data/u2.base"           // 100k
+    //val test_file  =  BASE_DIR + "/data/u2.test"
+    val train_file =  BASE_DIR + "/data/steam_games/training.csv"           // steam
+    val test_file  =  BASE_DIR + "/data/steam_games/testing.csv"
     println("Imported training and testing set.")
     var train   =  MatrixI(train_file)
-    train.setCol(0, train.col(0)-1)
-    train.setCol(1, train.col(1)-1)
+//    train.setCol(0, train.col(0)-1)
+//    train.setCol(1, train.col(1)-1)   //movielens
+    train.setCol(0, train.col(0))
+    train.setCol(1, train.col(1))   //steam
     println("Generating training set.")
     var tester   =  MatrixI(test_file)
-    tester.setCol(0, tester.col(0)-1)
-    tester.setCol(1, tester.col(1)-1)
+//    tester.setCol(0, tester.col(0)-1)
+//    tester.setCol(1, tester.col(1)-1) //movielens
+    tester.setCol(0, tester.col(0))
+    tester.setCol(1, tester.col(1)) //steam
     println("Generating testing set.")
     val train_d = rec.genTrain2(train)
     val I = rec.ConI(train_d)
