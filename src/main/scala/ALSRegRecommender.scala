@@ -153,7 +153,8 @@ object ALSRegRecommenderTest extends App{
     val BASE_DIR = System.getProperty("user.dir")
     //val data_file =  BASE_DIR + "/data/rating.txt"    //1m
     //val data_file =  BASE_DIR + "/data/sorted_data.txt"   //100k
-    val data_file =  BASE_DIR + "/data/steam_games/target.csv"  //steam
+    //val data_file =  BASE_DIR + "/data/steam_games/target.csv"  //steam
+    val data_file =  BASE_DIR + "/data/steam_games/steam-155k/155k_target.csv"  //steam-155k
     MatrixI.setSp('\t')
     var input   =  MatrixI(data_file)
 //    input.setCol(0, input.col(0)-1)
@@ -162,7 +163,8 @@ object ALSRegRecommenderTest extends App{
     input.setCol(1, input.col(1)) //steam
     //val (m, n)   = (6040, 3952)
     //val (m, n)   = (943, 1682)
-    val(m, n) = (11345, 3582)
+    //val(m, n) = (11345, 3582)
+    val (m,n) = (3170, 2880)
     println("Finished reading m and n.")
     val rec    = new ALSRegRecommender(input, m, n)
     val rating = rec.makeRatings(input, m, n)
@@ -171,8 +173,11 @@ object ALSRegRecommenderTest extends App{
 //    val test_file  =  BASE_DIR + "/data/u2Data.test"
     //val train_file =  BASE_DIR + "/data/u2.base"           // 100k
     //val test_file  =  BASE_DIR + "/data/u2.test"
-    val train_file =  BASE_DIR + "/data/steam_games/training.csv"           // steam
-    val test_file  =  BASE_DIR + "/data/steam_games/testing.csv"
+//    val train_file =  BASE_DIR + "/data/steam_games/training.csv"           // steam
+//    val test_file  =  BASE_DIR + "/data/steam_games/testing.csv"
+
+    val train_file =  BASE_DIR + "/data/steam_games/steam-155k/155k_train.csv"           // steam-155k
+    val test_file  =  BASE_DIR + "/data/steam_games/steam-155k/155k_test.csv"
     println("Imported training and testing set.")
     var train   =  MatrixI(train_file)
 //    train.setCol(0, train.col(0)-1)

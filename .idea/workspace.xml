@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8f772540-0297-4515-b966-011ddda6bfa3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/python/split_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/python/split_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/ALSExpRecommender.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/ALSExpRecommender.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/ALSExplicit.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/ALSExplicit.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/ALSReg.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/ALSReg.scala" afterDir="false" />
@@ -58,7 +59,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="add_unversioned_files" value="$PROJECT_DIR$/data/movie_100k.log&#10;E:/7200/ALS_ScalaTion/data/movielog.log&#10;E:/7200/ALS_ScalaTion/data/steam_games/reglog.log" />
+    <property name="add_unversioned_files" value="$PROJECT_DIR$/data/movie_100k.log&#10;E:/7200/ALS_ScalaTion/data/movielog.log&#10;E:/7200/ALS_ScalaTion/data/steam_games/reglog.log&#10;E:/7200/ALS_ScalaTion/data/steam_games/steam-155k/155k_target.csv&#10;E:/7200/ALS_ScalaTion/data/steam_games/steam-155k/155k.log" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -77,6 +78,7 @@
     <configuration name="ALSExpRecommenderTest" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="ALSExpRecommenderTest" />
       <module name="hello-world" />
+      <option name="VM_PARAMETERS" value="-Xmx6G" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -85,19 +87,6 @@
       <option name="MAIN_CLASS_NAME" value="ALSRegRecommenderTest" />
       <module name="hello-world" />
       <option name="VM_PARAMETERS" value=" -Xmx6G" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -127,7 +116,9 @@
       <workItem from="1616821139812" duration="8049000" />
       <workItem from="1616880607932" duration="593000" />
       <workItem from="1616881925373" duration="2823000" />
-      <workItem from="1616887843048" duration="5606000" />
+      <workItem from="1616887843048" duration="7694000" />
+      <workItem from="1616972576674" duration="4023000" />
+      <workItem from="1616986198364" duration="1928000" />
     </task>
     <servers />
   </component>

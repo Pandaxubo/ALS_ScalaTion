@@ -96,15 +96,17 @@ object ALSExpRecommenderTest extends App{
     
     val BASE_DIR = System.getProperty("user.dir")
     //val data_file =  BASE_DIR + "/data/sorted_data.txt"
-    val data_file =  BASE_DIR + "/data/rating.txt"
+    //val data_file =  BASE_DIR + "/data/rating.txt"
     //val data_file =  BASE_DIR + "/data/steam_games/target.csv"
+    val data_file =  BASE_DIR + "/data/steam_games/steam-155k/155k_target.csv"
     MatrixI.setSp('\t')
     var input   =  MatrixI(data_file)
-    input.setCol(0, input.col(0)-1)
-    input.setCol(1, input.col(1)-1)
+    input.setCol(0, input.col(0))
+    input.setCol(1, input.col(1))
     //val (m, n)   = (943, 1682)
-    val (m, n)   = (6040, 3952)
+    //val (m, n)   = (6040, 3952)
     //val (m, n)   = (11345, 3582)
+    val (m,n) = (3170, 2880)
     println("Finished reading m and n.")
     val rec    = new ALSExplicitRecommender(input, m, n)
     val rating = rec.makeRatings(input, m, n)
@@ -112,18 +114,20 @@ object ALSExpRecommenderTest extends App{
     //val train_file =  BASE_DIR + "/data/u2.base"           // replace u(1-5).base
     //val test_file  =  BASE_DIR + "/data/u2.test"
 
-    val train_file =  BASE_DIR + "/data/u2Data.train"           // replace u(1-5).base
-    val test_file  =  BASE_DIR + "/data/u2Data.test"
-    //val train_file =  BASE_DIR + "/data/steam_games/training.csv"           // replace u(1-5).base
-    //val test_file  =  BASE_DIR + "/data/steam_games/testing.csv"           // replace u(1-5).test
+    //val train_file =  BASE_DIR + "/data/u2Data.train"           // replace u(1-5).base
+    //val test_file  =  BASE_DIR + "/data/u2Data.test"
+    //val train_file =  BASE_DIR + "/data/steam_games/testing.csv"           // replace u(1-5).base
+    //val test_file  =  BASE_DIR + "/data/steam_games/training.csv"           // replace u(1-5).test
+    val train_file =  BASE_DIR + "/data/steam_games/steam-155k/155k_train.csv"           // replace u(1-5).base
+    val test_file  =  BASE_DIR + "/data/steam_games/steam-155k/155k_test.csv"           // replace u(1-5).test
     println("Imported training and testing set.")
     var train   =  MatrixI(train_file)
-    train.setCol(0, train.col(0)-1)
-    train.setCol(1, train.col(1)-1)
+    train.setCol(0, train.col(0))
+    train.setCol(1, train.col(1))
     println("Generating training set.")
     var tester   =  MatrixI(test_file)
-    tester.setCol(0, tester.col(0)-1)
-    tester.setCol(1, tester.col(1)-1)
+    tester.setCol(0, tester.col(0))
+    tester.setCol(1, tester.col(1))
     println("Generating testing set.")
     rec.genTrain2(train)
     println("Finishing data preprocessing.")

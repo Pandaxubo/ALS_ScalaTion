@@ -22,7 +22,7 @@ import MatrixD.eye
  */
 class ALSExplicit(a: MatrixD){
 
-  var r_lambda = 150 //normalization parameter
+  var r_lambda = 1 //normalization parameter
   var nf = 10  //dimension of latent vector of each user and item
   val ni = a.dim2 //number of items 
   val nu = a.dim1 //number of users 
@@ -109,6 +109,20 @@ class ALSExplicit(a: MatrixD){
   } // normalize
 
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  /** Limit the predict matrix from 1 to 5, in order to fit the test set.
+    * @param predict the predict matrix
+    */
+  def limitation(predict : MatrixD):MatrixD = {
+    for(i <- predict.range1)
+      for(j <- predict.range2)
+        if(predict(i,j) > 5.0 )
+          predict(i,j) = 5.0
+        else if(predict(i,j) < 1.0)
+          predict(i,j) = 1.0
+    predict
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   /** Train the model to get predict matrix using input dataset.
     *  @see Matrix Completion via Alternating Least Square(ALS)
     *  @see http://stanford.edu/~rezab/classes/cme323/S15/notes/lec14.pdf 
@@ -116,10 +130,10 @@ class ALSExplicit(a: MatrixD){
   def train(): MatrixD = {
     val target = new ALSExplicit(a)
 
-    var X = RandomMatD (target.nu, target.nf, 5, 1, 1, 0).gen//* 0.00001
-    var Y = RandomMatD (target.ni, target.nf, 5, 1, 1, 0).gen//* 0.00001
+    var X = RandomMatD (target.nu, target.nf, 5, 1, 1, 0).gen
+    var Y = RandomMatD (target.ni, target.nf, 5, 1, 1, 0).gen
 
-    val interval = 16 //iterations
+    val interval = 11 //iterations
 
     for (i <- 0 until interval) {
       println("----------------step "+i+"----------------")
@@ -133,27 +147,15 @@ class ALSExplicit(a: MatrixD){
     }
 
     val BASE_DIR = System.getProperty("user.dir")
-    //val test_file =  BASE_DIR + "/data/steam_games/training.csv"
-    //val ave = getAverage(test_file)
 
-    val u_mat = normalize_u()
-//    val i_mat = normalize_i()
-//    var norm = u_mat - i_mat
-//    for(i <- norm.range1; j <- norm.range2){
-//      norm(i, j) = abs(norm(i, j))
-//    }
 
-    var predict = X * (Y.t)+ u_mat - 0.8
+//    val u_mat = normalize_u()
+    val i_mat = normalize_i()
 
-    for(i <- predict.range1)
-      for(j <- predict.range2)
-        if(predict(i,j) > 5.0 )
-          predict(i,j) = 5.0
-        else if(predict(i,j) < 1.0)
-          predict(i,j) = 1.0
+    var predict = X * (Y.t) + i_mat
+    target.limitation(predict)
 
     println("----------------End----------------")
-    //predict.write(BASE_DIR + "/data/steam_games/result.csv")
     predict 
   }
 }

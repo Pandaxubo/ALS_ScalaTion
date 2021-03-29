@@ -25,7 +25,7 @@ class ALSReg(a: MatrixD){
   var nf = 20  //dimension of latent vector of each user and item
   val ni = a.dim2 //number of items 
   val nu = a.dim1 //number of users 
-  var n_epochs = 11   //Number of epochs
+  var n_epochs = 16   //Number of epochs
   var E = eye(nf) //(nf x nf)-dimensional identity matrix
 
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
